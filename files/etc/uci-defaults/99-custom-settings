@@ -1,0 +1,127 @@
+#!/bin/sh
+
+uci -q batch <<-EOF >/dev/null
+# /etc/config/system
+    set system.@system[0].timezone='CST-8'
+    set system.@system[0].zonename='Asia/Shanghai'
+    commit system
+
+# /etc/config/network
+    set network.lan.ipaddr='192.168.5.1'
+    commit network
+
+# /etc/config/wireless
+    set wireless.radio0.disabled='0'
+    set wireless.radio0.channel='149'
+    set wireless.default_radio0.key='password'
+    set wireless.default_radio0.encryption='sae-mixed'
+
+    set wireless.radio1.disabled='0'
+    set wireless.radio1.channel='1'
+    set wireless.default_radio1.key='password'
+    set wireless.default_radio1.encryption='sae-mixed'
+
+    set wireless.radio2.disabled='0'
+    set wireless.radio2.channel='36'
+    set wireless.default_radio2.key='password'
+    set wireless.default_radio2.encryption='sae-mixed'
+
+    commit wireless
+
+# /etc/config/smartdns
+    #set smartdns.@smartdns[0].enabled='1'
+    # for openwrt-22.03
+    set smartdns.@smartdns[0].port='6053'
+    # for openwrt-22.03
+    set smartdns.@smartdns[0].auto_set_dnsmasq='0'
+
+    #set smartdns.cfg016bb1.seconddns_enabled='1'
+    #set smartdns.cfg016bb1.seconddns_server_group='passwall'
+    #set smartdns.cfg016bb1.seconddns_no_speed_check='1'
+    #set smartdns.cfg016bb1.seconddns_no_rule_nameserver='1'
+    #set smartdns.cfg016bb1.seconddns_no_dualstack_selection='1'
+    #set smartdns.cfg016bb1.seconddns_no_cache='1'
+
+    #add smartdns server # =cfg02769c
+    #set smartdns.@server[0].name='Aliyun'
+    #set smartdns.@server[0].server_group='cn'
+    #set smartdns.@server[0].ip='223.5.5.5'
+
+    #add smartdns server # =cfg03769c
+    #set smartdns.@server[1].name='DNSPod'
+    #set smartdns.@server[1].server_group='cn'
+    #set smartdns.@server[1].ip='119.29.29.29'
+
+    #add smartdns server # =cfg04769c
+    #set smartdns.@server[2].name='Baidu'
+    #set smartdns.@server[2].server_group='cn'
+    #set smartdns.@server[2].ip='180.76.76.76'
+
+    #add smartdns server # =cfg05769c
+    #set smartdns.@server[3].port='853'
+    #set smartdns.@server[3].name='Cloudflare'
+    #set smartdns.@server[3].addition_arg='-exclude-default-group'
+    #set smartdns.@server[3].server_group='passwall'
+    #set smartdns.@server[3].type='tls'
+    #set smartdns.@server[3].ip='1.1.1.1'
+
+    #add smartdns server # =cfg06769c
+    #set smartdns.@server[4].port='853'
+    #set smartdns.@server[4].name='Google'
+    #set smartdns.@server[4].addition_arg='-exclude-default-group'
+    #set smartdns.@server[4].server_group='passwall'
+    #set smartdns.@server[4].type='tls'
+    #set smartdns.@server[4].ip='8.8.8.8'
+
+    #add smartdns server # =cfg07769c
+    #set smartdns.@server[5].port='853'
+    #set smartdns.@server[5].name='OpenDNS'
+    #set smartdns.@server[5].addition_arg='-exclude-default-group'
+    #set smartdns.@server[5].server_group='passwall'
+    #set smartdns.@server[5].type='tls'
+    #set smartdns.@server[5].ip='208.67.222.222'
+
+    commit smartdns
+
+# /etc/config/dhcp
+    #add_list dhcp.@dnsmasq[0].server='127.0.0.1#6053'
+    #set dhcp.@dnsmasq[0].noresolv='1'
+
+    #set dhcp.lan.ra='relay'
+    #set dhcp.lan.dhcpv6='relay'
+    #set dhcp.lan.ndp='relay'
+
+    #set dhcp.wan6=dhcp
+    #set dhcp.wan6.interface='wan6'
+    #set dhcp.wan6.ignore='1'
+    #set dhcp.wan6.master='1'
+    #set dhcp.wan6.ra='relay'
+    #set dhcp.wan6.dhcpv6='relay'
+    #set dhcp.wan6.ndp='relay'
+
+    #commit dhcp
+
+# /etc/config/AdGuardHome
+    #set AdGuardHome.AdGuardHome.enabled='1'
+    #set AdGuardHome.AdGuardHome.redirect='redirect'
+    #commit AdGuardHome
+
+# /etc/config/vlmcsd
+    #set vlmcsd.config.enabled='1'
+    #set vlmcsd.config.autoactivate='1'
+    #commit vlmcsd
+
+# /etc/config/sqm
+    #set sqm.eth1.enabled='1'
+    #set sqm.eth1.interface='wan'
+    #set sqm.eth1.download='300000'
+    #set sqm.eth1.upload='30000'
+    #commit sqm
+EOF
+
+passwd root <<EOF
+password
+password
+EOF
+
+exit 0
