@@ -91,6 +91,7 @@ jobs:
         echo "$packages 目前版本: $Old_PKG_VERSION"
         echo "$packages 最新版本: $New_PKG_VERSION"
         version_greater_equal "$Old_PKG_VERSION" "$New_PKG_VERSION" && echo "$packages 版本为最新版本 $Old_PKG_VERSION ,无需更新" || (PKG_HASH=$(wget -qO - $release_download_url$New_PKG_VERSION | tee file | sha256sum | awk '{print $1}') && sed -i "s/PKG_VERSION:=.*/PKG_VERSION:=$New_PKG_VERSION/g ; s/PKG_HASH:=.*/PKG_HASH:=$PKG_HASH/g" feeds/packages/net/xray-core/Makefile && echo "已更新 $packages 版本到: $New_PKG_VERSION")
+        cp $GITHUB_WORKSPACE/Makefile.golang.1.22.0 feeds/packages/lang/golang/golang/Makefile
         [ ! -e feeds/luci/applications/luci-app-adguardhome ] && git clone --branch master --depth 1 --single-branch https://github.com/kongfl888/luci-app-adguardhome.git feeds/luci/applications/luci-app-adguardhome
         git clone --branch openwrt-23.05 --depth 1 --single-branch https://github.com/immortalwrt/packages.git tmp_packages
         git clone --branch openwrt-23.05 --depth 1 --single-branch https://github.com/immortalwrt/luci.git tmp_luci
