@@ -66,10 +66,11 @@ jobs:
         cd openwrt
         git config --global user.email "noreply@github.com"
         git config --global user.name "GitHub Actions"
-        git fetch https://github.com/openwrt/openwrt refs/pull/14669/head:202402-dnsmasq290
-        git checkout 202402-dnsmasq290
-        git checkout $REPO_BRANCH
-        git cherry-pick 33160df
+        #git fetch https://github.com/openwrt/openwrt refs/pull/14669/head:202402-dnsmasq290
+        #git checkout 202402-dnsmasq290
+        #git checkout $REPO_BRANCH
+        #git cherry-pick 33160df
+        git cherry-pick 838a27f
         $GITHUB_WORKSPACE/$DIY_P1_SH
 
     - name: Update feeds
