@@ -25,7 +25,7 @@ env:
   DIY_P2_SH: diy-part2.sh
   UPLOAD_BIN_DIR: false
   UPLOAD_FIRMWARE: true
-  UPLOAD_RELEASE: false
+  UPLOAD_RELEASE: true
   TZ: Asia/Shanghai
 
 jobs:
@@ -70,7 +70,7 @@ jobs:
         #git checkout 202402-dnsmasq290
         #git checkout $REPO_BRANCH
         #git cherry-pick 33160df
-        git cherry-pick 838a27f
+        #git cherry-pick 838a27f
         $GITHUB_WORKSPACE/$DIY_P1_SH
 
     - name: Update feeds
@@ -98,7 +98,7 @@ jobs:
         echo "$packages 目前版本: $Old_PKG_VERSION"
         echo "$packages 最新版本: $New_PKG_VERSION"
         version_greater_equal "$Old_PKG_VERSION" "$New_PKG_VERSION" && echo "$packages 版本为最新版本 $Old_PKG_VERSION ,无需更新" || (PKG_HASH=$(wget -qO - $release_download_url$New_PKG_VERSION | tee file | sha256sum | awk '{print $1}') && sed -i "s/PKG_VERSION:=.*/PKG_VERSION:=$New_PKG_VERSION/g ; s/PKG_HASH:=.*/PKG_HASH:=$PKG_HASH/g" feeds/packages/net/xray-core/Makefile && echo "已更新 $packages 版本到: $New_PKG_VERSION")
-        cp $GITHUB_WORKSPACE/Makefile.golang.1.22.0 feeds/packages/lang/golang/golang/Makefile
+        cp $GITHUB_WORKSPACE/Makefile.golang feeds/packages/lang/golang/golang/Makefile
         [ ! -e feeds/luci/applications/luci-app-adguardhome ] && git clone --branch master --depth 1 --single-branch https://github.com/kongfl888/luci-app-adguardhome.git feeds/luci/applications/luci-app-adguardhome
         git clone --branch openwrt-23.05 --depth 1 --single-branch https://github.com/immortalwrt/packages.git tmp_packages
         git clone --branch openwrt-23.05 --depth 1 --single-branch https://github.com/immortalwrt/luci.git tmp_luci
@@ -149,10 +149,12 @@ jobs:
         CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Haproxy=y
         CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Shadowsocks_Libev_Server=y
         CONFIG_PACKAGE_luci-app-passwall_INCLUDE_SingBox=y
+        CONFIG_PACKAGE_luci-app-passwall_INCLUDE_V2ray_Plugin=y
         CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Xray=y
         CONFIG_PACKAGE_luci-app-passwall2=y
         CONFIG_PACKAGE_luci-app-passwall2_INCLUDE_Haproxy=y
         CONFIG_PACKAGE_luci-app-passwall2_INCLUDE_SingBox=y
+        CONFIG_PACKAGE_luci-app-passwall2_INCLUDE_V2ray_Plugin=y
         CONFIG_PACKAGE_luci-app-smartdns=y
         CONFIG_PACKAGE_luci-app-sqm=y
         CONFIG_PACKAGE_luci-app-upnp=y
