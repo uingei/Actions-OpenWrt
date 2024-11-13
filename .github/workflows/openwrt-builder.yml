@@ -136,9 +136,9 @@ jobs:
         [ ! -e openwrt/files/usr/bin ] && mkdir -p openwrt/files/usr/bin
         #curl --fail -sL https://static.adguard.com/adguardhome/release/AdGuardHome_linux_armv7.tar.gz | tar -xz -C openwrt/files/usr/bin
         [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt/.config || cat >> openwrt/.config <<EOF
-        CONFIG_TARGET_ipq40xx=y
-        CONFIG_TARGET_ipq40xx_generic=y
-        CONFIG_TARGET_ipq40xx_generic_DEVICE_linksys_mr8300=y
+        CONFIG_TARGET_x86=y
+        CONFIG_TARGET_x86_64=y
+        CONFIG_TARGET_x86_64_DEVICE_generic=y
         # CONFIG_PACKAGE_dnsmasq is not set
         CONFIG_PACKAGE_dnsmasq-full=y
         CONFIG_PACKAGE_dnsmasq_full_ipset=y
@@ -158,7 +158,6 @@ jobs:
         CONFIG_PACKAGE_luci=y
         CONFIG_LUCI_LANG_zh_Hans=y
         CONFIG_PACKAGE_luci-app-adblock=y
-        CONFIG_PACKAGE_luci-app-advanced-reboot=y
         CONFIG_PACKAGE_luci-app-openclash=y
         CONFIG_PACKAGE_luci-app-passwall=y
         # CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Shadowsocks_Libev_Client is not set
@@ -248,8 +247,8 @@ jobs:
       run: |
         cd openwrt/bin/targets/*/*
         rm -rf packages
-        rm -f *initramfs-zImage.itb
-        rm -f *squashfs-sysupgrade.bin
+        #rm -f *initramfs-zImage.itb
+        #rm -f *squashfs-sysupgrade.bin
         echo "FIRMWARE=$PWD" >> $GITHUB_ENV
         echo "status=success" >> $GITHUB_OUTPUT
 
