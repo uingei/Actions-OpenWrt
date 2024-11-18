@@ -175,10 +175,10 @@ serve-expired-ttl 345600
 
 EOF
 
-passwd root <<EOF
-password
-password
-EOF
+#passwd root <<EOF
+#password
+#password
+#EOF
 
 sed -i '/^cn$/d' /usr/share/passwall/rules/direct_host
 sed -i 's/geosite:cn/geosite:geolocation-cn/g' /usr/share/passwall/0_default_config
