@@ -96,7 +96,7 @@ jobs:
         echo "$packages最新版本: $New_PKG_VERSION"
         version_greater_equal "$Old_PKG_VERSION" "$New_PKG_VERSION" && echo "$packages版本为最新版本$Old_PKG_VERSION,无需更新" || (PKG_HASH=$(wget -qO - $release_download_url$New_PKG_VERSION | tee file | sha256sum | awk '{print $1}') && sed -i -e "/^$version_head/c$version_head$New_PKG_VERSION" -e "/^$hash_head/c$hash_head$PKG_HASH" feeds/packages/net/xray-core/Makefile && echo "已更新$packages版本到: $New_PKG_VERSION")
         #cp $GITHUB_WORKSPACE/Makefile.golang feeds/packages/lang/golang/golang/Makefile
-        [ -e feeds/packages/net/xray-core/patches ] && rm -rf feeds/packages/net/xray-core/patches
+        #[ -e feeds/packages/net/xray-core/patches ] && rm -rf feeds/packages/net/xray-core/patches
         git clone --branch openwrt-24.10 --depth 1 --single-branch https://github.com/immortalwrt/packages.git tmp_packages
         git clone --branch openwrt-24.10 --depth 1 --single-branch https://github.com/immortalwrt/luci.git tmp_luci
         git clone --branch openwrt-23.05 --depth 1 --single-branch https://github.com/openwrt/packages.git tmp_oldpackages
@@ -158,6 +158,7 @@ jobs:
         CONFIG_PACKAGE_luci=y
         CONFIG_LUCI_LANG_zh_Hans=y
         CONFIG_PACKAGE_luci-app-adblock=y
+        CONFIG_PACKAGE_luci-app-ddns=y
         CONFIG_PACKAGE_luci-app-openclash=y
         CONFIG_PACKAGE_luci-app-passwall=y
         # CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Shadowsocks_Libev_Client is not set
@@ -176,6 +177,7 @@ jobs:
         CONFIG_PACKAGE_luci-app-vlmcsd=y
         CONFIG_PACKAGE_luci-app-zerotier=y
         CONFIG_PACKAGE_luci-theme-openwrt-2020=y
+        CONFIG_PACKAGE_luci-proto-wireguard=y
         CONFIG_PACKAGE_wget-ssl=y
         CONFIG_PACKAGE_ip6tables-mod-nat=y
         CONFIG_PACKAGE_ip6tables-zz-legacy=y
@@ -183,6 +185,7 @@ jobs:
         CONFIG_PACKAGE_miniupnpd-iptables=y
         # CONFIG_PACKAGE_miniupnpd-nftables is not set
         # CONFIG_PACKAGE_nftables-json is not set
+        CONFIG_PACKAGE_openssh-sftp-server=y
         # CONFIG_PACKAGE_wpad-basic-mbedtls is not set
         CONFIG_PACKAGE_wpad-basic-openssl=y
         CONFIG_SINGBOX_WITH_ACME=y
