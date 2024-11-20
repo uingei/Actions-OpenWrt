@@ -25,7 +25,7 @@ env:
   DIY_P2_SH: diy-part2.sh
   UPLOAD_BIN_DIR: false
   UPLOAD_FIRMWARE: true
-  UPLOAD_RELEASE: false
+  UPLOAD_RELEASE: true
   TZ: Asia/Shanghai
 
 jobs:
@@ -250,8 +250,11 @@ jobs:
       run: |
         cd openwrt/bin/targets/*/*
         rm -rf packages
-        #rm -f *initramfs-zImage.itb
-        #rm -f *squashfs-sysupgrade.bin
+        rm -f *combined-efi.img.gz
+        rm -f *generic-ext4-combined.img.gz
+        rm -f *rootfs.img.gz
+        rm -f *generic-kernel.bin
+        rm -f *rootfs.tar.gz
         echo "FIRMWARE=$PWD" >> $GITHUB_ENV
         echo "status=success" >> $GITHUB_OUTPUT
 
