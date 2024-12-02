@@ -18,7 +18,7 @@ on:
 
 env:
   REPO_URL: https://git.openwrt.org/openwrt/openwrt.git
-  REPO_BRANCH: openwrt-23.05
+  REPO_BRANCH: openwrt-24.10
   FEEDS_CONF: feeds.conf.default
   CONFIG_FILE: .config
   DIY_P1_SH: diy-part1.sh
@@ -96,11 +96,11 @@ jobs:
         echo "$packages最新版本: $New_PKG_VERSION"
         version_greater_equal "$Old_PKG_VERSION" "$New_PKG_VERSION" && echo "$packages版本为最新版本$Old_PKG_VERSION,无需更新" || (PKG_HASH=$(wget -qO - $release_download_url$New_PKG_VERSION | tee file | sha256sum | awk '{print $1}') && sed -i -e "/^$version_head/c$version_head$New_PKG_VERSION" -e "/^$hash_head/c$hash_head$PKG_HASH" feeds/packages/net/xray-core/Makefile && echo "已更新$packages版本到: $New_PKG_VERSION")
         #cp $GITHUB_WORKSPACE/Makefile.golang feeds/packages/lang/golang/golang/Makefile
-        git clone --branch openwrt-24.10 --depth 1 --single-branch https://github.com/openwrt/packages.git new_packages
-        rm -rf feeds/packages/lang/golang && mv new_packages/lang/golang feeds/packages/lang
-        [ -e feeds/packages/net/xray-core/patches ] && rm -rf feeds/packages/net/xray-core/patches
-        git clone --branch openwrt-23.05 --depth 1 --single-branch https://github.com/immortalwrt/packages.git tmp_packages
-        git clone --branch openwrt-23.05 --depth 1 --single-branch https://github.com/immortalwrt/luci.git tmp_luci
+        #[ -e feeds/packages/net/xray-core/patches ] && rm -rf feeds/packages/net/xray-core/patches
+        git clone --branch openwrt-24.10 --depth 1 --single-branch https://github.com/immortalwrt/packages.git tmp_packages
+        git clone --branch openwrt-24.10 --depth 1 --single-branch https://github.com/immortalwrt/luci.git tmp_luci
+        git clone --branch openwrt-23.05 --depth 1 --single-branch https://github.com/openwrt/packages.git tmp_oldpackages
+        [[ -e tmp_oldpackages/net/shadowsocks-libev && ! -e feeds/packages/net/shadowsocks-libev ]] && mv tmp_oldpackages/net/shadowsocks-libev feeds/packages/net
         #[ ! -e feeds/luci/applications/luci-app-adguardhome ] && git clone --branch master --depth 1 --single-branch https://github.com/kongfl888/luci-app-adguardhome.git feeds/luci/applications/luci-app-adguardhome
         #[[ -e tmp_packages/net/gost && ! -e feeds/packages/net/gost ]] && mv tmp_packages/net/gost feeds/packages/net
         #[[ -e tmp_luci/applications/luci-app-gost && ! -e feeds/luci/applications/luci-app-gost ]] && mv tmp_luci/applications/luci-app-gost feeds/luci/applications
@@ -115,9 +115,9 @@ jobs:
         #[ ! -e feeds/packages/lang/lua-maxminddb ] && git clone --branch master --depth 1 --single-branch https://github.com/jerrykuku/lua-maxminddb.git feeds/packages/lang/lua-maxminddb
         #[ ! -e feeds/luci/applications/luci-app-vssr ] && git clone --branch master --depth 1 --single-branch https://github.com/jerrykuku/luci-app-vssr.git feeds/luci/applications/luci-app-vssr
         [[ -e tmp_luci/applications/luci-app-zerotier && ! -e feeds/luci/applications/luci-app-zerotier ]] && mv tmp_luci/applications/luci-app-zerotier feeds/luci/applications
-        rm -rf new_packages
         rm -rf tmp_packages
         rm -rf tmp_luci
+        rm -rf tmp_oldpackages
         ./scripts/feeds update -i packages
         ./scripts/feeds update -i luci
         sed -i "/iptables-nft/d" feeds/passwall2_luci/luci-app-passwall2/Makefile
@@ -162,10 +162,18 @@ jobs:
         CONFIG_PACKAGE_luci-app-ddns=y
         CONFIG_PACKAGE_luci-app-openclash=y
         CONFIG_PACKAGE_luci-app-passwall=y
+        # CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Shadowsocks_Libev_Client is not set
+        # CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Shadowsocks_Libev_Server is not set
+        CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Shadowsocks_Rust_Client=y
+        CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Shadowsocks_Rust_Server=y
         CONFIG_PACKAGE_luci-app-passwall2=y
+        # CONFIG_PACKAGE_luci-app-passwall2_INCLUDE_Shadowsocks_Libev_Client is not set
+        CONFIG_PACKAGE_luci-app-passwall2_INCLUDE_Shadowsocks_Rust_Client=y
         CONFIG_PACKAGE_luci-app-smartdns=y
         CONFIG_PACKAGE_luci-app-sqm=y
         CONFIG_PACKAGE_luci-app-ssr-plus=y
+        CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Shadowsocks_Rust_Client=y
+        CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Shadowsocks_Rust_Server=y
         CONFIG_PACKAGE_luci-app-upnp=y
         CONFIG_PACKAGE_luci-app-vlmcsd=y
         CONFIG_PACKAGE_luci-app-zerotier=y
