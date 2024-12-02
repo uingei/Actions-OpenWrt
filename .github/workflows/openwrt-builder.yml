@@ -25,7 +25,7 @@ env:
   DIY_P2_SH: diy-part2.sh
   UPLOAD_BIN_DIR: false
   UPLOAD_FIRMWARE: true
-  UPLOAD_RELEASE: false
+  UPLOAD_RELEASE: true
   TZ: Asia/Shanghai
 
 jobs:
@@ -121,6 +121,7 @@ jobs:
         ./scripts/feeds update -i packages
         ./scripts/feeds update -i luci
         sed -i "/iptables-nft/d" feeds/passwall2_luci/luci-app-passwall2/Makefile
+        [ -e package/kernel/mac80211/files/lib/wifi/mac80211.sh ] && sed -i 's/disabled=1/disabled=0/g' package/kernel/mac80211/files/lib/wifi/mac80211.sh
 
     - name: Install feeds
       run: cd openwrt && ./scripts/feeds install -a
@@ -138,7 +139,13 @@ jobs:
         [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt/.config || cat >> openwrt/.config <<EOF
         CONFIG_TARGET_ipq40xx=y
         CONFIG_TARGET_ipq40xx_generic=y
-        CONFIG_TARGET_ipq40xx_generic_DEVICE_linksys_mr8300=y
+        CONFIG_TARGET_MULTI_PROFILE=y
+        CONFIG_TARGET_PER_DEVICE_ROOTFS=y
+        CONFIG_TARGET_DEVICE_ipq40xx_generic_DEVICE_asus_rt-ac42u=y
+        CONFIG_TARGET_DEVICE_ipq40xx_generic_DEVICE_linksys_ea8300=y
+        CONFIG_TARGET_DEVICE_PACKAGES_ipq40xx_generic_DEVICE_linksys_ea8300="luci-app-advanced-reboot"
+        CONFIG_TARGET_DEVICE_ipq40xx_generic_DEVICE_linksys_mr8300=y
+        CONFIG_TARGET_DEVICE_PACKAGES_ipq40xx_generic_DEVICE_linksys_mr8300="luci-app-advanced-reboot"
         # CONFIG_PACKAGE_dnsmasq is not set
         CONFIG_PACKAGE_dnsmasq-full=y
         CONFIG_PACKAGE_dnsmasq_full_ipset=y
@@ -158,7 +165,6 @@ jobs:
         CONFIG_PACKAGE_luci=y
         CONFIG_LUCI_LANG_zh_Hans=y
         CONFIG_PACKAGE_luci-app-adblock=y
-        CONFIG_PACKAGE_luci-app-advanced-reboot=y
         CONFIG_PACKAGE_luci-app-ddns=y
         CONFIG_PACKAGE_luci-app-openclash=y
         CONFIG_PACKAGE_luci-app-passwall=y
@@ -222,7 +228,7 @@ jobs:
         echo -e "$(nproc) thread compile"
         make -j$(nproc) || make -j1 || make -j1 V=s
         echo "status=success" >> $GITHUB_OUTPUT
-        grep '^CONFIG_TARGET.*DEVICE.*=y' .config | sed -r 's/.*DEVICE_(.*)=y/\1/' > DEVICE_NAME
+        grep '^CONFIG_TARGET.*DEVICE_asus_rt-ac42u=y' .config | sed -r 's/.*DEVICE_(.*)=y/\1/' > DEVICE_NAME
         [ -s DEVICE_NAME ] && echo "DEVICE_NAME=_$(cat DEVICE_NAME)" >> $GITHUB_ENV
         echo "FILE_DATE=_$(date +"%Y%m%d%H%M")" >> $GITHUB_ENV
 
@@ -243,8 +249,9 @@ jobs:
       run: |
         cd openwrt/bin/targets/*/*
         rm -rf packages
-        rm -f *initramfs-zImage.itb
-        rm -f *squashfs-sysupgrade.bin
+        rm -f *8300-initramfs-zImage.itb
+        rm -f *8300-squashfs-sysupgrade.bin
+        rm -f *initramfs-uImage.itb
         echo "FIRMWARE=$PWD" >> $GITHUB_ENV
         echo "status=success" >> $GITHUB_OUTPUT
 
