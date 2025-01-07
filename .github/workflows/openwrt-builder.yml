@@ -183,6 +183,7 @@ jobs:
         CONFIG_PACKAGE_luci-app-zerotier=y
         CONFIG_PACKAGE_luci-theme-openwrt-2020=y
         CONFIG_PACKAGE_luci-proto-wireguard=y
+        CONFIG_PACKAGE_mesh11sd=y
         CONFIG_PACKAGE_wget-ssl=y
         CONFIG_PACKAGE_ip6tables-mod-nat=y
         CONFIG_PACKAGE_ip6tables-zz-legacy=y
@@ -192,7 +193,7 @@ jobs:
         # CONFIG_PACKAGE_nftables-json is not set
         CONFIG_PACKAGE_openssh-sftp-server=y
         # CONFIG_PACKAGE_wpad-basic-mbedtls is not set
-        CONFIG_PACKAGE_wpad-mesh-openssl=y
+        CONFIG_PACKAGE_wpad-openssl=y
         CONFIG_SINGBOX_WITH_ACME=y
         CONFIG_SINGBOX_WITH_CLASH_API=y
         # CONFIG_SINGBOX_WITH_DHCP is not set
