@@ -40,6 +40,13 @@ jobs:
       env:
         DEBIAN_FRONTEND: noninteractive
       run: |
+        sudo apt-get -qq purge apache2 \
+        netstandard-targeting-pack* \
+        clang-16 clang-17 clang-18 clang-format-16 clang-format-17 clang-format-18 clang-tidy-16 clang-tidy-17 clang-tidy-18 \
+        g++-12 g++-13 g++-14 gcc-12 gcc-13 gcc-14 gfortran-12 gfortran-13 gfortran-14 \
+        firefox google-chrome-stable microsoft-edge-stable \
+        java-common mysql-common nginx-common php-common postgresql-common \
+        ubuntu-standard
         sudo mv /etc/apt/sources.list.d/ubuntu.sources /tmp
         sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL
         sudo mv /tmp/ubuntu.sources /etc/apt/sources.list.d
