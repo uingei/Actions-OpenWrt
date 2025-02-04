@@ -40,6 +40,7 @@ jobs:
       env:
         DEBIAN_FRONTEND: noninteractive
       run: |
+        sudo systemctl stop snapd
         sudo apt-get -qq purge \
         dotnet* \
         powershell \
@@ -79,7 +80,11 @@ jobs:
         ufw \
         vim-tiny \
         nano \
-        usbutils
+        usbutils \
+        snapd
+        sudo rm -rf /var/cache/snapd
+        sudo rm -rf /var/lib/snapd
+        sudo rm -rf ~/snap
         sudo mv /etc/apt/sources.list.d/ubuntu.sources /tmp
         sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL
         sudo mv /tmp/ubuntu.sources /etc/apt/sources.list.d
