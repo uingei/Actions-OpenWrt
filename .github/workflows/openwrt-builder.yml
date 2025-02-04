@@ -40,6 +40,46 @@ jobs:
       env:
         DEBIAN_FRONTEND: noninteractive
       run: |
+        sudo apt-get -qq purge \
+        dotnet* \
+        powershell \
+        mono-complete \
+        llvm* \
+        mongodb* \
+        mysql* \
+        openjdk* \
+        php* \
+        snapd \
+        firefox \
+        google-chrome-stable \
+        microsoft-edge-stable \
+        android-sdk \
+        azure-cli \
+        google-cloud-sdk \
+        ghc* \
+        nodejs \
+        ruby* \
+        zulu* \
+        man-db \
+        manpages \
+        fonts* \
+        libreoffice* \
+        thunderbird \
+        gnome* \
+        ubuntu-desktop* \
+        xserver-xorg* \
+        x11-* \
+        fonts-* \
+        qt* \
+        gstreamer* \
+        gtk* \
+        unattended-upgrades \
+        ubuntu-release-upgrader-core \
+        apport \
+        ufw \
+        vim-tiny \
+        nano \
+        usbutils
         sudo mv /etc/apt/sources.list.d/ubuntu.sources /tmp
         sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL
         sudo mv /tmp/ubuntu.sources /etc/apt/sources.list.d
