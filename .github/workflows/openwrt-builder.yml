@@ -40,6 +40,13 @@ jobs:
       env:
         DEBIAN_FRONTEND: noninteractive
       run: |
+        sudo apt-get -qq purge apache2 \
+        netstandard-targeting-pack* \
+        clang-16 clang-17 clang-18 clang-format-16 clang-format-17 clang-format-18 clang-tidy-16 clang-tidy-17 clang-tidy-18 \
+        g++-12 g++-13 g++-14 gcc-12 gcc-13 gcc-14 gfortran-12 gfortran-13 gfortran-14 \
+        firefox google-chrome-stable microsoft-edge-stable \
+        java-common mysql-common nginx-common php-common postgresql-common \
+        ubuntu-standard
         sudo mv /etc/apt/sources.list.d/ubuntu.sources /tmp
         sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL
         sudo mv /tmp/ubuntu.sources /etc/apt/sources.list.d
@@ -143,7 +150,6 @@ jobs:
         CONFIG_TARGET_x86_64_DEVICE_generic=y
         # CONFIG_TARGET_ROOTFS_TARGZ is not set
         # CONFIG_TARGET_ROOTFS_EXT4FS is not set
-        # CONFIG_GRUB_EFI_IMAGES is not set
         # CONFIG_PACKAGE_dnsmasq is not set
         CONFIG_PACKAGE_dnsmasq-full=y
         CONFIG_PACKAGE_dnsmasq_full_ipset=y
@@ -164,6 +170,7 @@ jobs:
         CONFIG_LUCI_LANG_zh_Hans=y
         CONFIG_PACKAGE_luci-app-adblock=y
         CONFIG_PACKAGE_luci-app-ddns=y
+        CONFIG_PACKAGE_luci-app-filemanager=y
         CONFIG_PACKAGE_luci-app-openclash=y
         CONFIG_PACKAGE_luci-app-passwall=y
         # CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Shadowsocks_Libev_Client is not set
@@ -192,7 +199,7 @@ jobs:
         # CONFIG_PACKAGE_nftables-json is not set
         CONFIG_PACKAGE_openssh-sftp-server=y
         # CONFIG_PACKAGE_wpad-basic-mbedtls is not set
-        CONFIG_PACKAGE_wpad-basic-openssl=y
+        CONFIG_PACKAGE_wpad-openssl=y
         CONFIG_SINGBOX_WITH_ACME=y
         CONFIG_SINGBOX_WITH_CLASH_API=y
         # CONFIG_SINGBOX_WITH_DHCP is not set
@@ -255,7 +262,6 @@ jobs:
       run: |
         cd openwrt/bin/targets/*/*
         rm -rf packages
-        rm -f *combined-efi.img.gz
         rm -f *generic-ext4-combined.img.gz
         rm -f *rootfs.img.gz
         rm -f *generic-kernel.bin
