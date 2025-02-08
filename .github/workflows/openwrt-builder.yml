@@ -149,7 +149,6 @@ jobs:
         CONFIG_TARGET_ipq40xx=y
         CONFIG_TARGET_ipq40xx_generic=y
         CONFIG_TARGET_ipq40xx_generic_DEVICE_linksys_mr8300=y
-        CONFIG_DEVEL=y
         CONFIG_BPF_TOOLCHAIN_BUILD_LLVM=y
         # CONFIG_PACKAGE_dnsmasq is not set
         CONFIG_PACKAGE_dnsmasq-full=y
