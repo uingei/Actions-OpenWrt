@@ -148,7 +148,6 @@ jobs:
         CONFIG_TARGET_x86=y
         CONFIG_TARGET_x86_64=y
         CONFIG_TARGET_x86_64_DEVICE_generic=y
-        # CONFIG_TARGET_ROOTFS_TARGZ is not set
         # CONFIG_TARGET_ROOTFS_EXT4FS is not set
         # CONFIG_PACKAGE_dnsmasq is not set
         CONFIG_PACKAGE_dnsmasq-full=y
@@ -262,10 +261,8 @@ jobs:
       run: |
         cd openwrt/bin/targets/*/*
         rm -rf packages
-        rm -f *generic-ext4-combined.img.gz
         rm -f *rootfs.img.gz
         rm -f *generic-kernel.bin
-        rm -f *rootfs.tar.gz
         echo "FIRMWARE=$PWD" >> $GITHUB_ENV
         echo "status=success" >> $GITHUB_OUTPUT
 
