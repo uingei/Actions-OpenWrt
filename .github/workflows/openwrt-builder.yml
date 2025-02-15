@@ -180,7 +180,6 @@ jobs:
         CONFIG_PACKAGE_luci-app-smartdns=y
         CONFIG_PACKAGE_luci-app-upnp=y
         CONFIG_PACKAGE_luci-app-vlmcsd=y
-        CONFIG_PACKAGE_luci-app-zerotier=y
         CONFIG_PACKAGE_luci-theme-openwrt-2020=y
         CONFIG_PACKAGE_luci-proto-wireguard=y
         CONFIG_PACKAGE_wget-ssl=y
