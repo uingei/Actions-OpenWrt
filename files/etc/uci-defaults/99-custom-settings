@@ -133,9 +133,9 @@ uci -q batch <<-EOF >/dev/null
     commit adblock
 
 # /etc/config/vlmcsd
-    #set vlmcsd.config.enabled='1'
-    #set vlmcsd.config.autoactivate='1'
-    #commit vlmcsd
+    set vlmcsd.config.enabled='1'
+    set vlmcsd.config.auto_activate='1'
+    commit vlmcsd
 
 # /etc/config/qosify
     set qosify.wan.bandwidth_up='30mbit'
