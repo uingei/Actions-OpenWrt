@@ -126,6 +126,7 @@ jobs:
         #[ ! -e feeds/packages/lang/lua-maxminddb ] && git clone --branch master --depth 1 --single-branch https://github.com/jerrykuku/lua-maxminddb.git feeds/packages/lang/lua-maxminddb
         #[ ! -e feeds/luci/applications/luci-app-vssr ] && git clone --branch master --depth 1 --single-branch https://github.com/jerrykuku/luci-app-vssr.git feeds/luci/applications/luci-app-vssr
         [[ -e tmp_luci/applications/luci-app-zerotier && ! -e feeds/luci/applications/luci-app-zerotier ]] && mv tmp_luci/applications/luci-app-zerotier feeds/luci/applications
+        rm -rf new_packages
         rm -rf tmp_packages
         rm -rf tmp_luci
         rm -rf tmp_oldpackages
