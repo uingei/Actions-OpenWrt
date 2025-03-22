@@ -98,7 +98,7 @@ jobs:
         echo "$packages最新版本: $New_PKG_VERSION"
         version_greater_equal "$Old_PKG_VERSION" "$New_PKG_VERSION" && echo "$packages版本为最新版本$Old_PKG_VERSION,无需更新" || (PKG_HASH=$(wget -qO - $release_download_url$New_PKG_VERSION | tee file | sha256sum | awk '{print $1}') && sed -i -e "/^$version_head/c$version_head$New_PKG_VERSION" -e "/^$hash_head/c$hash_head$PKG_HASH" feeds/packages/net/xray-core/Makefile && echo "已更新$packages版本到: $New_PKG_VERSION")
         #cp $GITHUB_WORKSPACE/Makefile.golang feeds/packages/lang/golang/golang/Makefile
-        git clone --branch openwrt-24.10 --depth 1 --single-branch https://github.com/openwrt/packages.git new_packages
+        git clone --branch master --depth 1 --single-branch https://github.com/openwrt/packages.git new_packages
         rm -rf feeds/packages/lang/golang && mv new_packages/lang/golang feeds/packages/lang
         [ -e feeds/packages/net/xray-core/patches ] && rm -rf feeds/packages/net/xray-core/patches
         git clone --branch openwrt-23.05 --depth 1 --single-branch https://github.com/immortalwrt/packages.git tmp_packages
@@ -133,7 +133,7 @@ jobs:
         [ -e files ] && mv files openwrt/files
         [ ! -e openwrt/files/etc/openclash/core ] && mkdir -p openwrt/files/etc/openclash/core
         tunver=$(curl --fail -sL https://raw.githubusercontent.com/vernesong/OpenClash/core/master/core_version | sed -n 2p)
-        #curl --fail -sL https://raw.githubusercontent.com/vernesong/OpenClash/core/master/meta/clash-linux-armv7.tar.gz | tar -xz -C openwrt/files/etc/openclash/core && mv openwrt/files/etc/openclash/core/clash openwrt/files/etc/openclash/core/clash_meta
+        curl --fail -sL https://raw.githubusercontent.com/vernesong/OpenClash/core/master/meta/clash-linux-armv7.tar.gz | tar -xz -C openwrt/files/etc/openclash/core && mv openwrt/files/etc/openclash/core/clash openwrt/files/etc/openclash/core/clash_meta
         #curl --fail -sL https://raw.githubusercontent.com/vernesong/OpenClash/core/master/premium/clash-linux-armv7-${tunver}.gz | gzip -d > openwrt/files/etc/openclash/core/clash_tun && chmod +x openwrt/files/etc/openclash/core/clash_tun
         #curl --fail -sL https://raw.githubusercontent.com/vernesong/OpenClash/core/master/dev/clash-linux-armv7.tar.gz | tar -xz -C openwrt/files/etc/openclash/core
         [ ! -e openwrt/files/usr/bin ] && mkdir -p openwrt/files/usr/bin
@@ -141,13 +141,7 @@ jobs:
         [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt/.config || cat >> openwrt/.config <<EOF
         CONFIG_TARGET_ipq40xx=y
         CONFIG_TARGET_ipq40xx_generic=y
-        CONFIG_TARGET_MULTI_PROFILE=y
-        CONFIG_TARGET_PER_DEVICE_ROOTFS=y
-        CONFIG_TARGET_DEVICE_ipq40xx_generic_DEVICE_asus_rt-ac42u=y
-        CONFIG_TARGET_DEVICE_ipq40xx_generic_DEVICE_linksys_ea8300=y
-        CONFIG_TARGET_DEVICE_PACKAGES_ipq40xx_generic_DEVICE_linksys_ea8300="luci-app-advanced-reboot"
-        CONFIG_TARGET_DEVICE_ipq40xx_generic_DEVICE_linksys_mr8300=y
-        CONFIG_TARGET_DEVICE_PACKAGES_ipq40xx_generic_DEVICE_linksys_mr8300="luci-app-advanced-reboot"
+        CONFIG_TARGET_ipq40xx_generic_DEVICE_asus_rt-ac42u=y
         # CONFIG_PACKAGE_dnsmasq is not set
         CONFIG_PACKAGE_dnsmasq-full=y
         CONFIG_PACKAGE_dnsmasq_full_ipset=y
@@ -176,7 +170,6 @@ jobs:
         CONFIG_PACKAGE_luci-app-ssr-plus=y
         CONFIG_PACKAGE_luci-app-upnp=y
         CONFIG_PACKAGE_luci-app-vlmcsd=y
-        CONFIG_PACKAGE_luci-app-zerotier=y
         CONFIG_PACKAGE_luci-theme-openwrt-2020=y
         CONFIG_PACKAGE_luci-proto-wireguard=y
         CONFIG_PACKAGE_wget-ssl=y
@@ -188,7 +181,7 @@ jobs:
         # CONFIG_PACKAGE_nftables-json is not set
         CONFIG_PACKAGE_openssh-sftp-server=y
         # CONFIG_PACKAGE_wpad-basic-mbedtls is not set
-        CONFIG_PACKAGE_wpad-basic-openssl=y
+        CONFIG_PACKAGE_wpad-openssl=y
         CONFIG_SINGBOX_WITH_ACME=y
         CONFIG_SINGBOX_WITH_CLASH_API=y
         # CONFIG_SINGBOX_WITH_DHCP is not set
@@ -230,7 +223,7 @@ jobs:
         echo -e "$(nproc) thread compile"
         make -j$(nproc) || make -j1 || make -j1 V=s
         echo "status=success" >> $GITHUB_OUTPUT
-        grep '^CONFIG_TARGET.*DEVICE_asus_rt-ac42u=y' .config | sed -r 's/.*DEVICE_(.*)=y/\1/' > DEVICE_NAME
+        grep '^CONFIG_TARGET.*DEVICE.*=y' .config | sed -r 's/.*DEVICE_(.*)=y/\1/' > DEVICE_NAME
         [ -s DEVICE_NAME ] && echo "DEVICE_NAME=_$(cat DEVICE_NAME)" >> $GITHUB_ENV
         echo "FILE_DATE=_$(date +"%Y%m%d%H%M")" >> $GITHUB_ENV
 
@@ -251,8 +244,6 @@ jobs:
       run: |
         cd openwrt/bin/targets/*/*
         rm -rf packages
-        rm -f *8300-initramfs-zImage.itb
-        rm -f *8300-squashfs-sysupgrade.bin
         rm -f *initramfs-uImage.itb
         echo "FIRMWARE=$PWD" >> $GITHUB_ENV
         echo "status=success" >> $GITHUB_OUTPUT
@@ -274,7 +265,7 @@ jobs:
         echo "status=success" >> $GITHUB_OUTPUT
 
     - name: Upload firmware to release
-      uses: softprops/action-gh-release@v2
+      uses: softprops/action-gh-release@master
       if: steps.tag.outputs.status == 'success' && !cancelled()
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
