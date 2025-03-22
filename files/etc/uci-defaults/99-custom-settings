@@ -39,12 +39,12 @@ uci -q batch <<-EOF >/dev/null
     set smartdns.@smartdns[0].tcp_server='0'
     set smartdns.@smartdns[0].dualstack_ip_selection='0'
     set smartdns.@smartdns[0].prefetch_domain='1'
-    #set smartdns.@smartdns[0].serve_expired='1'
+    set smartdns.@smartdns[0].serve_expired='1'
     set smartdns.@smartdns[0].cache_size='12288'
     set smartdns.@smartdns[0].cache_persist='0'
     #set smartdns.@smartdns[0].resolve_local_hostnames='1'
     #set smartdns.@smartdns[0].force_https_soa='1'
-    #set smartdns.@smartdns[0].rr_ttl_min='600'
+    set smartdns.@smartdns[0].rr_ttl_min='600'
 
     set smartdns.@smartdns[0].seconddns_enabled='1'
     #set smartdns.@smartdns[0].seconddns_port='6553'
@@ -131,7 +131,7 @@ uci -q batch <<-EOF >/dev/null
 
 # /etc/config/vlmcsd
     #set vlmcsd.config.enabled='1'
-    #set vlmcsd.config.autoactivate='1'
+    #set vlmcsd.config.auto_activate='1'
     #commit vlmcsd
 
 # /etc/config/sqm
