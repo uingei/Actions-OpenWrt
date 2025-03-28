@@ -1,0 +1,36 @@
+--- a/plugin/smartdns-ui/Makefile
++++ b/plugin/smartdns-ui/Makefile
+@@ -22,17 +22,17 @@ DESTDIR :=
+ SMARTDNS_SRC_DIR=../../src
+ 
+ ifeq ($(origin CC), environment)
+-  ARCH_TARGET:=$(shell $(CC) -dumpmachine | sed 's/-[^-]*-linux-/-linux-/')
+-  ARCH=$(shell echo $(ARCH_TARGET) | cut -d - -f 1)
+-  ABI=$(shell echo $(ARCH_TARGET) | cut -d - -f 3)
++  ARCH_TARGET := $(shell $(CC) -dumpmachine | sed 's/-[^-]*-linux-/-linux-/')
++  ARCH := $(shell echo $(ARCH_TARGET) | cut -d - -f 1)
++  ABI := $(shell echo $(ARCH_TARGET) | cut -d - -f 3)
+   ifneq ($(ABI),)
+-    RUST_ARCH_TARGET:=$(shell rustc --print target-list | grep $(ARCH) | grep linux | grep $(ABI) | head -n 1)
++    RUST_ARCH_TARGET := $(shell rustc --print target-list | grep -E "^$(ARCH)-unknown-linux-.*$(ABI)$$" | head -n 1)
+   endif
+ 
+   ifneq ($(RUST_ARCH_TARGET),)
+-    ARCH_TARGET_PATH=$(RUST_ARCH_TARGET)/
+-    override CARGO_RUSTFLAGS=-C linker=$(CC)
+-    CARGO_BUILD_ARGS +=--target=$(RUST_ARCH_TARGET)
++    ARCH_TARGET_PATH := $(RUST_ARCH_TARGET)/
++    override CARGO_RUSTFLAGS = -C linker=$(CC)
++    CARGO_BUILD_ARGS += --target=$(RUST_ARCH_TARGET)
+   endif
+ endif
+ 
+@@ -65,7 +65,7 @@ test-prepare:
+ 
+ $(BIN):
+ 	MAKEFLAGS= RUSTFLAGS="$(CARGO_RUSTFLAGS) $(RUSTFLAGS)" cargo build $(CARGO_BUILD_ARGS) --features "build-release"
+-	cp $(CARGO_BUILD_PATH)/libsmartdns_ui.so target/ 
++	find . -type f -name "libsmartdns_ui.so" -exec cp {} target/ \; 
+ 
+ install: $(BIN)
+ 	install -v -m 0644 -D -t $(DESTDIR)$(SLIBDIR)/smartdns target/libsmartdns_ui.so

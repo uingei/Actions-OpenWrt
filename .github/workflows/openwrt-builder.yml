@@ -117,6 +117,10 @@ jobs:
         #[[ -e tmp_luci/applications/luci-app-gost && ! -e feeds/luci/applications/luci-app-gost ]] && mv tmp_luci/applications/luci-app-gost feeds/luci/applications
         [ ! -e feeds/luci/applications/luci-app-homeproxy ] && git clone --branch master --depth 1 --single-branch https://github.com/immortalwrt/homeproxy.git feeds/luci/applications/luci-app-homeproxy
         rm -rf feeds/packages/net/smartdns && git clone --branch master --depth 1 --single-branch https://github.com/pymumu/openwrt-smartdns.git feeds/packages/net/smartdns
+        sed -i '/define Build\/Compile\/smartdns-ui/a\\t$(TAB)cargo install --force --locked bindgen-cli' feeds/packages/net/smartdns/Makefile
+        mkdir feeds/packages/net/smartdns/patches
+        #cp $GITHUB_WORKSPACE/smartdns-2303cff.patch feeds/packages/net/smartdns/patches/001-ui.patch && echo "copy patch"
+        cp $GITHUB_WORKSPACE/002-ui.patch feeds/packages/net/smartdns/patches/002-ui.patch && echo "copy patch 2"
         rm -rf feeds/luci/applications/luci-app-smartdns && git clone --branch master --depth 1 --single-branch https://github.com/pymumu/luci-app-smartdns.git feeds/luci/applications/luci-app-smartdns
         [[ -e tmp_packages/net/mosdns && ! -e feeds/packages/net/mosdns ]] && mv tmp_packages/net/mosdns feeds/packages/net
         sed -i '/CGO_ENABLED=0/,+1d' feeds/packages/net/mosdns/Makefile
@@ -215,12 +219,103 @@ jobs:
         CONFIG_SINGBOX_WITH_UTLS=y
         # CONFIG_SINGBOX_WITH_V2RAY_API is not set
         CONFIG_SINGBOX_WITH_WIREGUARD=y
+        CONFIG_PACKAGE_smartdns-ui=y
         CONFIG_PACKAGE_vim=y
         CONFIG_PACKAGE_vim-runtime=y
+        CONFIG_CRYPTO_AES_NI_INTEL=y
+        CONFIG_PACKAGE_block-mount=y
+        CONFIG_PACKAGE_kmod-fs-ext4=y
+        CONFIG_PACKAGE_kmod-fs-ntfs=y
+        CONFIG_PACKAGE_kmod-fs-vfat=y
+        CONFIG_PACKAGE_kmod-fs-exfat=y
+        CONFIG_PACKAGE_kmod-fs-btrfs=y
+        CONFIG_PACKAGE_kmod-fs-xfs=y
+        CONFIG_PACKAGE_kmod-usb-storage=y
+        CONFIG_PACKAGE_kmod-usb-storage-extras=y
+        CONFIG_PACKAGE_kmod-usb-uhci=y
+        CONFIG_PACKAGE_kmod-usb-ohci=y
+        CONFIG_PACKAGE_kmod-usb3=y
+        CONFIG_PACKAGE_kmod-tun=y
+        CONFIG_PACKAGE_kmod-macvlan=y
+        CONFIG_PACKAGE_kmod-veth=y
+        CONFIG_PACKAGE_kmod-vxlan=y
+        CONFIG_PACKAGE_kmod-wireguard=y
+        CONFIG_PACKAGE_kmod-sit=y
+        CONFIG_PACKAGE_kmod-ipv6=y
+        CONFIG_PACKAGE_kmod-ppp=y
+        CONFIG_PACKAGE_kmod-pppoe=y
+        CONFIG_PACKAGE_kmod-nf-nathelper=y
+        CONFIG_PACKAGE_kmod-nf-nathelper-extra=y
+        CONFIG_PACKAGE_kmod-bonding=y
+        CONFIG_PACKAGE_kmod-l2tp=y
+        CONFIG_PACKAGE_kmod-mac80211=y
+        CONFIG_PACKAGE_kmod-cfg80211=y
+        CONFIG_PACKAGE_kmod-ath10k=y
+        CONFIG_PACKAGE_kmod-rtl8812au=y
+        CONFIG_PACKAGE_kmod-rtl8188eu=y
+        CONFIG_PACKAGE_kmod-brcmfmac=y
+        CONFIG_PACKAGE_kmod-hwmon-coretemp=y
+        CONFIG_PACKAGE_kmod-hwmon-acpi-power_meter=y
+        CONFIG_PACKAGE_kmod-i2c-core=y
+        CONFIG_PACKAGE_kmod-i2c-i801=y
+        CONFIG_PACKAGE_kmod-hid=y
+        CONFIG_PACKAGE_kmod-hid-generic=y
+        CONFIG_PACKAGE_kmod-hid-multitouch=y
+        CONFIG_PACKAGE_kmod-usb-hid=y
+        CONFIG_PACKAGE_kmod-serial-8250=y
+        CONFIG_PACKAGE_kmod-usb-serial=y
+        CONFIG_PACKAGE_kmod-usb-serial-ftdi=y
+        CONFIG_PACKAGE_kmod-usb-serial-pl2303=y
+        CONFIG_PACKAGE_kmod-usb-net=y
+        CONFIG_PACKAGE_kmod-usb-net-rndis=y
+        CONFIG_PACKAGE_kmod-usb-net-cdc-ncm=y
+        CONFIG_PACKAGE_kmod-usb-net-cdc-ether=y
+        CONFIG_PACKAGE_kmod-usb-net-cdc-mbim=y
+        CONFIG_PACKAGE_htop=y
+        CONFIG_PACKAGE_iotop=y
+        CONFIG_PACKAGE_nano=y
+        CONFIG_PACKAGE_screen=y
+        CONFIG_PACKAGE_tmux=y
+        CONFIG_PACKAGE_usbutils=y
+        CONFIG_PACKAGE_pciutils=y
+        CONFIG_PACKAGE_ipv6helper=y
+        CONFIG_PACKAGE_kmod-vmxnet3=y
+        CONFIG_PACKAGE_kmod-virtio=y
+        CONFIG_PACKAGE_kmod-virtio-net=y
+        CONFIG_PACKAGE_kmod-virtio-scsi=y
+        CONFIG_PACKAGE_kmod-virtio-balloon=y
+        CONFIG_PACKAGE_kmod-hyperv=y
+        CONFIG_PACKAGE_kmod-hyperv-net=y
+        CONFIG_PACKAGE_kmod-hyperv-stor=y
+        CONFIG_PACKAGE_kmod-hyperv-vmbus=y
+        CONFIG_PACKAGE_kmod-sound-core=y
+        CONFIG_PACKAGE_kmod-sound-hda-codec-hdmi=y
+        CONFIG_PACKAGE_kmod-sound-hda-codec-realtek=y
+        CONFIG_PACKAGE_kmod-sound-hda-intel=y
+        CONFIG_PACKAGE_kmod-usb-audio=y
+        CONFIG_PACKAGE_irqbalance=y
+        CONFIG_PACKAGE_sched-tool=y
+        CONFIG_PACKAGE_ethtool=y
+        CONFIG_PACKAGE_perf=y
+        CONFIG_PACKAGE_sysstat=y
         EOF
         chmod +x $DIY_P2_SH
         cd openwrt
         $GITHUB_WORKSPACE/$DIY_P2_SH
+
+    - name: Use Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+
+    - name: build smartdns-webui
+      run: |
+        git clone --depth 1 https://github.com/pymumu/smartdns-webui.git smartdns-ui
+        npm --prefix smartdns-ui install
+        npm --prefix smartdns-ui run build
+        mkdir -p openwrt/files/usr/share/smartdns
+        mv smartdns-ui/out openwrt/files/usr/share/smartdns/wwwroot
+        rm -rf smartdns-ui
 
     - name: Download package
       id: package
@@ -242,7 +337,7 @@ jobs:
       run: |
         cd openwrt
         echo -e "$(nproc) thread compile"
-        make -j$(nproc) || make -j1 || make -j1 V=s
+        make -j$(nproc) || make -j1 V=s
         echo "status=success" >> $GITHUB_OUTPUT
         grep '^CONFIG_TARGET.*DEVICE.*=y' .config | sed -r 's/.*DEVICE_(.*)=y/\1/' > DEVICE_NAME
         [ -s DEVICE_NAME ] && echo "DEVICE_NAME=_$(cat DEVICE_NAME)" >> $GITHUB_ENV
