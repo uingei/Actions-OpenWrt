@@ -1,59 +1,11 @@
 --- a/plugin/smartdns-ui/Makefile
 +++ b/plugin/smartdns-ui/Makefile
-@@ -26,7 +26,7 @@ ifeq ($(origin CC), environment)
-   ARCH=$(shell echo $(ARCH_TARGET) | cut -d - -f 1)
-   ABI=$(shell echo $(ARCH_TARGET) | cut -d - -f 3)
-   ifneq ($(ABI),)
--    RUST_ARCH_TARGET:=$(shell rustc --print target-list | grep $(ARCH) | grep linux | grep $(ABI) | head -n 1)
-+    RUST_ARCH_TARGET:=$(shell rustc --print target-list | (grep -E "^$(ARCH)-unknown-linux-$(ABI)$$" || grep -E "^$(ARCH)-[^-]+-linux-$(ABI)$$" || grep -E "^$(ARCH)-linux-$(ABI)$$") | head -n 1)
-   endif
- 
-   ifneq ($(RUST_ARCH_TARGET),)
-@@ -46,17 +46,17 @@ ifdef DEBUG
-   SMARTDNS_BUILD_TYPE=DEBUG=1
- else
-   ifdef OPTIMIZE_SIZE
--    CARGO_BUILD_ARGS += --profile release-optmize-size
--	CARGO_BUILD_PATH=target/$(ARCH_TARGET_PATH)release-optmize-size
-+    CARGO_BUILD_ARGS += --profile release-optimize-size
-+    CARGO_BUILD_PATH=target/$(ARCH_TARGET_PATH)release-optimize-size
-   else
-     CARGO_BUILD_ARGS +=--release
--  	CARGO_BUILD_PATH=target/$(ARCH_TARGET_PATH)release
-+    CARGO_BUILD_PATH=target/$(ARCH_TARGET_PATH)release
-   endif
- 
-   SMARTDNS_BUILD_TYPE=
- endif
- 
--.PHONY: all clean install $(BIN)
-+.PHONY: all clean install $(BIN) test test-prepare
- 
- all: $(BIN)
- 
-@@ -64,16 +64,20 @@ test-prepare:
- 	$(MAKE) -C $(SMARTDNS_SRC_DIR) libsmartdns-test.a
+@@ -88,7 +88,7 @@ test-prepare:
  
  $(BIN):
--	MAKEFLAGS= RUSTFLAGS="$(CARGO_RUSTFLAGS) $(RUSTFLAGS)" cargo build $(CARGO_BUILD_ARGS) --features "build-release"
+ 	MAKEFLAGS= RUSTFLAGS="$(CARGO_RUSTFLAGS) $(RUSTFLAGS)" $(CARGO_BUILD_ENV) cargo build $(CARGO_BUILD_ARGS) --features "build-release"
 -	cp $(CARGO_BUILD_PATH)/libsmartdns_ui.so target/ 
-+	RUSTFLAGS="$(CARGO_RUSTFLAGS) $(RUSTFLAGS)" cargo build $(CARGO_BUILD_ARGS) --features "build-release"
-+	echo 1_$(RUST_ARCH_TARGET)
-+	echo 2_$(ARCH_TARGET_PATH)
-+	echo 3_$(CARGO_BUILD_PATH)
-+	cp $(CARGO_BUILD_PATH)/libsmartdns_ui.so target/
++	find . -type f -path "*/release/libsmartdns_ui.so" -exec cp {} target/ \; 
  
  install: $(BIN)
--	install -v -m 0644 -D -t $(DESTDIR)$(SLIBDIR)/smartdns target/libsmartdns_ui.so
-+	mkdir -p $(DESTDIR)$(SLIBDIR)/smartdns
-+	install -v -m 0644 target/libsmartdns_ui.so $(DESTDIR)$(SLIBDIR)/smartdns/
- 
- test: test-prepare
--	MAKEFLAGS= cargo test
-+	cargo test
- 
- clean:
- 	cargo clean
- 	$(MAKE) -C $(SMARTDNS_SRC_DIR) clean
--	rm -rf target/libsmartdns_ui.so
-+	rm -f target/libsmartdns_ui.so
+ 	install -v -m 0644 -D -t $(DESTDIR)$(SLIBDIR)/smartdns target/libsmartdns_ui.so
