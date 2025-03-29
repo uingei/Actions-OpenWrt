@@ -1,71 +1,56 @@
 --- a/plugin/smartdns-ui/Makefile
 +++ b/plugin/smartdns-ui/Makefile
-@@ -22,23 +22,34 @@ DESTDIR :=
- SMARTDNS_SRC_DIR=../../src
- 
- ifeq ($(origin CC), environment)
--  ARCH_TARGET:=$(shell $(CC) -dumpmachine | sed 's/-[^-]*-linux-/-linux-/')
-+  ARCH_TARGET:=$(shell $(CC) -dumpmachine)
+@@ -26,7 +26,7 @@ ifeq ($(origin CC), environment)
    ARCH=$(shell echo $(ARCH_TARGET) | cut -d - -f 1)
-+  OS=$(shell echo $(ARCH_TARGET) | cut -d - -f 2)
    ABI=$(shell echo $(ARCH_TARGET) | cut -d - -f 3)
-+
    ifneq ($(ABI),)
 -    RUST_ARCH_TARGET:=$(shell rustc --print target-list | grep $(ARCH) | grep linux | grep $(ABI) | head -n 1)
-+    RUST_ARCH_TARGET:=$(shell rustc --print target-list | awk '{
-+        if ($$0 ~ /^$(ARCH)-unknown-$(OS)-$(ABI)$$/) match1=$$0;
-+        else if ($$0 ~ /^$(ARCH)-[^-]+-$(OS)-$(ABI)$$/) match2=$$0;
-+        else if ($$0 ~ /^$(ARCH)-$(OS)-$(ABI)$$/) match3=$$0;
-+    } END { 
-+        if (match1) print match1;
-+        else if (match2) print match2;
-+        else if (match3) print match3;
-+        else { print "ERROR: No valid Rust target found for $(ARCH)-$(OS)-$(ABI)!" > "/dev/stderr"; exit 1; }
-+    }')
++    RUST_ARCH_TARGET:=$(shell rustc --print target-list | (grep -E "^$(ARCH)-unknown-linux-$(ABI)$$" || grep -E "^$(ARCH)-[^-]+-linux-$(ABI)$$" || grep -E "^$(ARCH)-linux-$(ABI)$$") | head -n 1)
    endif
  
    ifneq ($(RUST_ARCH_TARGET),)
-     ARCH_TARGET_PATH=$(RUST_ARCH_TARGET)/
-     override CARGO_RUSTFLAGS=-C linker=$(CC)
--    CARGO_BUILD_ARGS +=--target=$(RUST_ARCH_TARGET)
-+    CARGO_BUILD_ARGS += --target=$(RUST_ARCH_TARGET)
-   endif
- endif
- 
- IS_MUSL=$(shell $(CC) -v 2>&1 | grep -i musl >/dev/null 2>&1 && echo 1 || echo 0)
- ifeq ($(IS_MUSL), 1)
--override CARGO_RUSTFLAGS +=-C target-feature=-crt-static
-+  override CARGO_RUSTFLAGS += -C target-feature=-crt-static
- endif
- 
- ifdef DEBUG
-@@ -47,12 +58,11 @@ ifdef DEBUG
+@@ -46,17 +46,17 @@ ifdef DEBUG
+   SMARTDNS_BUILD_TYPE=DEBUG=1
  else
    ifdef OPTIMIZE_SIZE
-     CARGO_BUILD_ARGS += --profile release-optmize-size
+-    CARGO_BUILD_ARGS += --profile release-optmize-size
 -	CARGO_BUILD_PATH=target/$(ARCH_TARGET_PATH)release-optmize-size
-+    CARGO_BUILD_PATH=target/$(ARCH_TARGET_PATH)release-optmize-size
++    CARGO_BUILD_ARGS += --profile release-optimize-size
++    CARGO_BUILD_PATH=target/$(ARCH_TARGET_PATH)release-optimize-size
    else
--    CARGO_BUILD_ARGS +=--release
+     CARGO_BUILD_ARGS +=--release
 -  	CARGO_BUILD_PATH=target/$(ARCH_TARGET_PATH)release
-+    CARGO_BUILD_ARGS += --release
 +    CARGO_BUILD_PATH=target/$(ARCH_TARGET_PATH)release
    endif
--
+ 
    SMARTDNS_BUILD_TYPE=
  endif
  
-@@ -65,10 +75,11 @@ test-prepare:
+-.PHONY: all clean install $(BIN)
++.PHONY: all clean install $(BIN) test test-prepare
+ 
+ all: $(BIN)
+ 
+@@ -64,16 +64,17 @@ test-prepare:
+ 	$(MAKE) -C $(SMARTDNS_SRC_DIR) libsmartdns-test.a
  
  $(BIN):
- 	MAKEFLAGS= RUSTFLAGS="$(CARGO_RUSTFLAGS) $(RUSTFLAGS)" cargo build $(CARGO_BUILD_ARGS) --features "build-release"
+-	MAKEFLAGS= RUSTFLAGS="$(CARGO_RUSTFLAGS) $(RUSTFLAGS)" cargo build $(CARGO_BUILD_ARGS) --features "build-release"
 -	cp $(CARGO_BUILD_PATH)/libsmartdns_ui.so target/ 
++	RUSTFLAGS="$(CARGO_RUSTFLAGS) $(RUSTFLAGS)" cargo build $(CARGO_BUILD_ARGS) --features "build-release"
 +	cp $(CARGO_BUILD_PATH)/libsmartdns_ui.so target/
  
  install: $(BIN)
 -	install -v -m 0644 -D -t $(DESTDIR)$(SLIBDIR)/smartdns target/libsmartdns_ui.so
-+	install -d $(DESTDIR)$(SLIBDIR)/smartdns
++	mkdir -p $(DESTDIR)$(SLIBDIR)/smartdns
 +	install -v -m 0644 target/libsmartdns_ui.so $(DESTDIR)$(SLIBDIR)/smartdns/
  
  test: test-prepare
- 	MAKEFLAGS= cargo test
+-	MAKEFLAGS= cargo test
++	cargo test
+ 
+ clean:
+ 	cargo clean
+ 	$(MAKE) -C $(SMARTDNS_SRC_DIR) clean
+-	rm -rf target/libsmartdns_ui.so
++	rm -f target/libsmartdns_ui.so
