@@ -119,7 +119,7 @@ jobs:
         rm -rf feeds/packages/net/smartdns && git clone --branch master --depth 1 https://github.com/pymumu/openwrt-smartdns.git feeds/packages/net/smartdns
         #sed -i '/define Build\/Compile\/smartdns-ui/a\\t$(TAB)cargo install --force --locked bindgen-cli' feeds/packages/net/smartdns/Makefile
         sed -i 's|../../lang/rust/rust-package.mk|$(TOPDIR)/feeds/packages/lang/rust/rust-package.mk|g' feeds/packages/net/smartdns/Makefile
-        mkdir feeds/packages/net/smartdns/patches
+        #mkdir feeds/packages/net/smartdns/patches
         #cp $GITHUB_WORKSPACE/smartdns-2303cff.patch feeds/packages/net/smartdns/patches/001-ui.patch && echo "copy patch"
         #cp $GITHUB_WORKSPACE/002-ui.patch feeds/packages/net/smartdns/patches/002-ui.patch && echo "copy patch 2"
         rm -rf feeds/luci/applications/luci-app-smartdns && git clone --branch master --depth 1 https://github.com/pymumu/luci-app-smartdns.git feeds/luci/applications/luci-app-smartdns
