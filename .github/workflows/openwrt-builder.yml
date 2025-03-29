@@ -40,13 +40,19 @@ jobs:
       env:
         DEBIAN_FRONTEND: noninteractive
       run: |
-        sudo apt-get -qq purge apache2 \
+        sudo apt-get -qq remove --purge apache2 \
         netstandard-targeting-pack* \
-        clang-16 clang-17 clang-18 clang-format-16 clang-format-17 clang-format-18 clang-tidy-16 clang-tidy-17 clang-tidy-18 \
-        g++-12 g++-13 g++-14 gcc-12 gcc-13 gcc-14 gfortran-12 gfortran-13 gfortran-14 \
+        clang-[0-9][0-9] lldb-[0-9][0-9] lld-[0-9][0-9] clang-format-[0-9][0-9] clang-tidy-[0-9][0-9] \
+        g++-[0-9][0-9] gcc-[0-9][0-9] gfortran-[0-9][0-9] \
+        ruby-full \
         firefox google-chrome-stable microsoft-edge-stable \
         java-common mysql-common nginx-common php-common postgresql-common \
-        ubuntu-standard
+        ubuntu-standard -y
+        rustup self uninstall -y
+        sudo apt-get -qq remove --purge rustc cargo -y || true
+        rm -rf $HOME/.cargo $HOME/.rustup
+        echo "export PATH=\$(echo \$PATH | sed 's#:$HOME/.cargo/bin##')" >> $GITHUB_ENV
+        echo $PATH
         sudo mv /etc/apt/sources.list.d/ubuntu.sources /tmp
         sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL
         sudo mv /tmp/ubuntu.sources /etc/apt/sources.list.d
@@ -104,6 +110,12 @@ jobs:
         echo "$packages目前版本: $Old_PKG_VERSION"
         echo "$packages最新版本: $New_PKG_VERSION"
         version_greater_equal "$Old_PKG_VERSION" "$New_PKG_VERSION" && echo "$packages版本为最新版本$Old_PKG_VERSION,无需更新" || (PKG_HASH=$(wget -qO - $release_download_url$New_PKG_VERSION | tee file | sha256sum | awk '{print $1}') && sed -i -e "/^$version_head/c$version_head$New_PKG_VERSION" -e "/^$hash_head/c$hash_head$PKG_HASH" feeds/packages/net/xray-core/Makefile && echo "已更新$packages版本到: $New_PKG_VERSION")
+        packages='rust'
+        version_head='PKG_VERSION:='
+        hash_head='PKG_HASH:='
+        New_PKG_VERSION=1.85.1
+        PKG_HASH=0f2995ca083598757a8d9a293939e569b035799e070f419a686b0996fb94238a
+        sed -i -e "/^$version_head/c$version_head$New_PKG_VERSION" -e "/^$hash_head/c$hash_head$PKG_HASH" feeds/packages/lang/rust/Makefile && echo "已更新$packages版本到: $New_PKG_VERSION"
         #cp $GITHUB_WORKSPACE/Makefile.golang feeds/packages/lang/golang/golang/Makefile
         git clone --branch master --depth 1 https://github.com/openwrt/packages.git new_packages
         rm -rf feeds/packages/lang/golang && mv new_packages/lang/golang feeds/packages/lang
@@ -117,6 +129,11 @@ jobs:
         #[[ -e tmp_luci/applications/luci-app-gost && ! -e feeds/luci/applications/luci-app-gost ]] && mv tmp_luci/applications/luci-app-gost feeds/luci/applications
         [ ! -e feeds/luci/applications/luci-app-homeproxy ] && git clone --branch master --depth 1 https://github.com/immortalwrt/homeproxy.git feeds/luci/applications/luci-app-homeproxy
         rm -rf feeds/packages/net/smartdns && git clone --branch master --depth 1 https://github.com/pymumu/openwrt-smartdns.git feeds/packages/net/smartdns
+        sed -i '/define Build\/Compile\/smartdns-ui/a\\t$(TAB)cargo install --force --locked bindgen-cli' feeds/packages/net/smartdns/Makefile
+        sed -i 's|make -C $(PKG_BUILD_DIR)/plugin/smartdns-ui|make -C $(PKG_BUILD_DIR)/plugin/smartdns-ui -j1|g' feeds/packages/net/smartdns/Makefile
+        mkdir feeds/packages/net/smartdns/patches
+        #cp $GITHUB_WORKSPACE/smartdns-2303cff.patch feeds/packages/net/smartdns/patches/001-ui.patch && echo "copy patch"
+        cp $GITHUB_WORKSPACE/002-ui.patch feeds/packages/net/smartdns/patches/002-ui.patch && echo "copy patch 2"
         rm -rf feeds/luci/applications/luci-app-smartdns && git clone --branch master --depth 1 https://github.com/pymumu/luci-app-smartdns.git feeds/luci/applications/luci-app-smartdns
         [[ -e tmp_packages/net/mosdns && ! -e feeds/packages/net/mosdns ]] && mv tmp_packages/net/mosdns feeds/packages/net
         sed -i '/CGO_ENABLED=0/,+1d' feeds/packages/net/mosdns/Makefile
@@ -169,30 +186,19 @@ jobs:
         CONFIG_PACKAGE_libustream-openssl=y
         CONFIG_PACKAGE_luci=y
         CONFIG_LUCI_LANG_zh_Hans=y
-        CONFIG_PACKAGE_luci-app-adblock=y
         CONFIG_PACKAGE_luci-app-advanced-reboot=y
-        CONFIG_PACKAGE_luci-app-ddns=y
         CONFIG_PACKAGE_luci-app-filemanager=y
-        CONFIG_PACKAGE_luci-app-openclash=y
         CONFIG_PACKAGE_luci-app-passwall=y
         # CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Shadowsocks_Libev_Client is not set
         # CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Shadowsocks_Libev_Server is not set
         CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Shadowsocks_Rust_Client=y
         CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Shadowsocks_Rust_Server=y
-        CONFIG_PACKAGE_luci-app-passwall2=y
-        # CONFIG_PACKAGE_luci-app-passwall2_INCLUDE_Shadowsocks_Libev_Client is not set
-        CONFIG_PACKAGE_luci-app-passwall2_INCLUDE_Shadowsocks_Rust_Client=y
+        CONFIG_PACKAGE_luci-app-passwall_INCLUDE_V2ray_Geodata=y
         CONFIG_PACKAGE_luci-app-smartdns=y
         CONFIG_PACKAGE_luci-app-sqm=y
-        CONFIG_PACKAGE_luci-app-ssr-plus=y
-        CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Shadowsocks_Rust_Client=y
-        CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Shadowsocks_Rust_Server=y
-        # CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_MosDNS is not set
-        CONFIG_PACKAGE_luci-app-syncdial=y
         CONFIG_PACKAGE_luci-app-upnp=y
         CONFIG_PACKAGE_luci-app-vlmcsd=y
         CONFIG_PACKAGE_luci-theme-openwrt-2020=y
-        CONFIG_PACKAGE_luci-proto-wireguard=y
         CONFIG_PACKAGE_wget-ssl=y
         CONFIG_PACKAGE_ip6tables-mod-nat=y
         CONFIG_PACKAGE_ip6tables-zz-legacy=y
@@ -215,6 +221,7 @@ jobs:
         CONFIG_SINGBOX_WITH_UTLS=y
         # CONFIG_SINGBOX_WITH_V2RAY_API is not set
         CONFIG_SINGBOX_WITH_WIREGUARD=y
+        CONFIG_PACKAGE_smartdns-ui=y
         CONFIG_PACKAGE_vim=y
         CONFIG_PACKAGE_vim-runtime=y
         EOF
@@ -242,7 +249,7 @@ jobs:
       run: |
         cd openwrt
         echo -e "$(nproc) thread compile"
-        make -j$(nproc) || make -j1 || make -j1 V=s
+        make -j$(nproc) || make -j1 V=s
         echo "status=success" >> $GITHUB_OUTPUT
         grep '^CONFIG_TARGET.*DEVICE.*=y' .config | sed -r 's/.*DEVICE_(.*)=y/\1/' > DEVICE_NAME
         [ -s DEVICE_NAME ] && echo "DEVICE_NAME=_$(cat DEVICE_NAME)" >> $GITHUB_ENV

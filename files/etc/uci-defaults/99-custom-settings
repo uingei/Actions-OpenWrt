@@ -129,8 +129,8 @@ uci -q batch <<-EOF >/dev/null
     #commit AdGuardHome
 
 # /etc/config/adblock
-    set adblock.global.adb_triggerdelay='120'
-    commit adblock
+    #set adblock.global.adb_triggerdelay='120'
+    #commit adblock
 
 # /etc/config/vlmcsd
     set vlmcsd.config.enabled='1'

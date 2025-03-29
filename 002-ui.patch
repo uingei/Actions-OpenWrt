@@ -1,0 +1,23 @@
+--- a/plugin/smartdns-ui/Makefile
++++ b/plugin/smartdns-ui/Makefile
+@@ -26,7 +26,11 @@ ifeq ($(origin CC), environment)
+   ARCH=$(shell echo $(ARCH_TARGET) | cut -d - -f 1)
+   ABI=$(shell echo $(ARCH_TARGET) | cut -d - -f 3)
+   ifneq ($(ABI),)
+-    RUST_ARCH_TARGET:=$(shell rustc --print target-list | grep $(ARCH) | grep linux | grep $(ABI) | head -n 1)
++    RUST_ARCH_TARGET:=$(shell rustc --print target-list | awk '{
++      if ($$0 ~ /^$(ARCH)-unknown-linux-$(ABI)$$/) match1=$$0;
++      else if ($$0 ~ /^$(ARCH)-[^-]+-linux-$(ABI)$$/) match2=$$0;
++      else if ($$0 ~ /^$(ARCH)-linux-$(ABI)$$/) match3=$$0;
++  } END { if (match1) print match1; else if (match2) print match2; else if (match3) print match3; }')
+   endif
+ 
+   ifneq ($(RUST_ARCH_TARGET),)
+@@ -65,6 +69,7 @@ test-prepare:
+ 
+ $(BIN):
+ 	MAKEFLAGS= RUSTFLAGS="$(CARGO_RUSTFLAGS) $(RUSTFLAGS)" cargo build $(CARGO_BUILD_ARGS) --features "build-release"
++	echo $(RUST_ARCH_TARGET) $(ARCH_TARGET_PATH) $(CARGO_BUILD_PATH)
+ 	cp $(CARGO_BUILD_PATH)/libsmartdns_ui.so target/ 
+ 
+ install: $(BIN)
