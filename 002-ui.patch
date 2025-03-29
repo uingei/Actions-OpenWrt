@@ -31,13 +31,16 @@
  
  all: $(BIN)
  
-@@ -64,16 +64,17 @@ test-prepare:
+@@ -64,16 +64,20 @@ test-prepare:
  	$(MAKE) -C $(SMARTDNS_SRC_DIR) libsmartdns-test.a
  
  $(BIN):
 -	MAKEFLAGS= RUSTFLAGS="$(CARGO_RUSTFLAGS) $(RUSTFLAGS)" cargo build $(CARGO_BUILD_ARGS) --features "build-release"
 -	cp $(CARGO_BUILD_PATH)/libsmartdns_ui.so target/ 
 +	RUSTFLAGS="$(CARGO_RUSTFLAGS) $(RUSTFLAGS)" cargo build $(CARGO_BUILD_ARGS) --features "build-release"
++	echo 1_$(RUST_ARCH_TARGET)
++	echo 2_$(ARCH_TARGET_PATH)
++	echo 3_$(CARGO_BUILD_PATH)
 +	cp $(CARGO_BUILD_PATH)/libsmartdns_ui.so target/
  
  install: $(BIN)
