@@ -165,9 +165,9 @@ jobs:
         [ ! -e openwrt/files/usr/bin ] && mkdir -p openwrt/files/usr/bin
         #curl --fail -sL https://static.adguard.com/adguardhome/release/AdGuardHome_linux_armv7.tar.gz | tar -xz -C openwrt/files/usr/bin
         [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt/.config || cat >> openwrt/.config <<EOF
-        CONFIG_TARGET_ipq40xx=y
-        CONFIG_TARGET_ipq40xx_generic=y
-        CONFIG_TARGET_ipq40xx_generic_DEVICE_linksys_mr8300=y
+        CONFIG_TARGET_qualcommax=y
+        CONFIG_TARGET_qualcommax_ipq807x=y
+        CONFIG_TARGET_qualcommax_ipq807x_DEVICE_linksys_mx5300=y
         # CONFIG_PACKAGE_dnsmasq is not set
         CONFIG_PACKAGE_dnsmasq-full=y
         CONFIG_PACKAGE_dnsmasq_full_ipset=y
@@ -191,7 +191,6 @@ jobs:
         CONFIG_PACKAGE_luci-app-passwall=y
         # CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Shadowsocks_Libev_Client is not set
         # CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Shadowsocks_Libev_Server is not set
-        CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Shadowsocks_Rust_Client=y
         CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Shadowsocks_Rust_Server=y
         CONFIG_PACKAGE_luci-app-passwall_INCLUDE_V2ray_Geodata=y
         CONFIG_PACKAGE_luci-app-smartdns=y
