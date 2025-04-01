@@ -110,19 +110,19 @@ uci -q batch <<-EOF >/dev/null
     #add_list dhcp.@dnsmasq[0].server='127.0.0.1#6053'
     #set dhcp.@dnsmasq[0].noresolv='1'
 
-    set dhcp.lan.ra='relay'
-    set dhcp.lan.dhcpv6='relay'
-    set dhcp.lan.ndp='relay'
+    #set dhcp.lan.ra='relay'
+    #set dhcp.lan.dhcpv6='relay'
+    #set dhcp.lan.ndp='relay'
 
-    set dhcp.wan6=dhcp
-    set dhcp.wan6.interface='wan6'
-    set dhcp.wan6.ignore='1'
-    set dhcp.wan6.master='1'
-    set dhcp.wan6.ra='relay'
-    set dhcp.wan6.dhcpv6='relay'
-    set dhcp.wan6.ndp='relay'
+    #set dhcp.wan6=dhcp
+    #set dhcp.wan6.interface='wan6'
+    #set dhcp.wan6.ignore='1'
+    #set dhcp.wan6.master='1'
+    #set dhcp.wan6.ra='relay'
+    #set dhcp.wan6.dhcpv6='relay'
+    #set dhcp.wan6.ndp='relay'
 
-    commit dhcp
+    #commit dhcp
 
 # /etc/config/AdGuardHome
     #set AdGuardHome.AdGuardHome.enabled='1'
@@ -178,8 +178,6 @@ serve-expired-ttl 345600
 #dnsmasq-lease-file /tmp/dhcp.leases
 
 EOF
-
-mkdir -p /etc/smartdns/data
 
 passwd root <<EOF
 password
