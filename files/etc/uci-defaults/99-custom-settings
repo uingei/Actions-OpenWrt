@@ -115,6 +115,7 @@ uci -q batch <<-EOF >/dev/null
 
     #set dhcp.wan6=dhcp
     #set dhcp.wan6.interface='wan6'
+    #set dhcp.wan6.ignore='1'
     #set dhcp.wan6.master='1'
     #set dhcp.wan6.ra='relay'
     #set dhcp.wan6.dhcpv6='relay'
