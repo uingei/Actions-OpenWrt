@@ -68,6 +68,8 @@ uci -q batch <<-EOF >/dev/null
     set smartdns.@smartdns[0].audit_log_size='128k'
     set smartdns.@smartdns[0].audit_log_num='2'
 
+    set smartdns.@smartdns[0].proxy_server='socks5://127.0.0.1:1070'
+
     add smartdns server # =cfg02769c
     set smartdns.@server[0].name='Aliyun'
     set smartdns.@server[0].server_group='cn'
@@ -89,6 +91,7 @@ uci -q batch <<-EOF >/dev/null
     set smartdns.@server[3].server_group='pw'
     set smartdns.@server[3].type='tls'
     set smartdns.@server[3].ip='1.1.1.1'
+    set smartdns.@server[3].use_proxy='1'
 
     add smartdns server # =cfg06769c
     set smartdns.@server[4].name='Google'
@@ -96,6 +99,7 @@ uci -q batch <<-EOF >/dev/null
     set smartdns.@server[4].server_group='pw'
     set smartdns.@server[4].type='tls'
     set smartdns.@server[4].ip='8.8.8.8'
+    set smartdns.@server[4].use_proxy='1'
 
     add smartdns server # =cfg07769c
     set smartdns.@server[5].name='OpenDNS'
@@ -103,6 +107,7 @@ uci -q batch <<-EOF >/dev/null
     set smartdns.@server[5].server_group='pw'
     set smartdns.@server[5].type='tls'
     set smartdns.@server[5].ip='208.67.222.222'
+    set smartdns.@server[5].use_proxy='1'
 
     commit smartdns
 
