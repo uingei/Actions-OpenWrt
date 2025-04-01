@@ -176,8 +176,6 @@ serve-expired-ttl 345600
 
 EOF
 
-mkdir -p /etc/smartdns/data
-
 #passwd root <<EOF
 #password
 #password
