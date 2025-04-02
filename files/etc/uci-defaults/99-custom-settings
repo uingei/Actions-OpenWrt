@@ -50,7 +50,7 @@ uci -q batch <<-EOF >/dev/null
     set smartdns.@smartdns[0].response_mode='fastest-ip'
 
     set smartdns.@smartdns[0].enable_auto_update='1'
-    set smartdns.@smartdns[0].auto_update_week_time='*'
+    set smartdns.@smartdns[0].auto_update_week_time='1'
     set smartdns.@smartdns[0].auto_update_day_time='5'
 
     set smartdns.@smartdns[0].seconddns_enabled='1'
