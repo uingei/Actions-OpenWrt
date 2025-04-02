@@ -198,6 +198,7 @@ jobs:
         CONFIG_PACKAGE_miniupnpd-iptables=y
         # CONFIG_PACKAGE_miniupnpd-nftables is not set
         # CONFIG_PACKAGE_nftables-json is not set
+        CONFIG_PACKAGE_smartdns-ui=y
         CONFIG_PACKAGE_openssh-sftp-server=y
         # CONFIG_PACKAGE_wpad-basic-mbedtls is not set
         CONFIG_PACKAGE_wpad-openssl=y
@@ -213,7 +214,6 @@ jobs:
         CONFIG_SINGBOX_WITH_UTLS=y
         # CONFIG_SINGBOX_WITH_V2RAY_API is not set
         CONFIG_SINGBOX_WITH_WIREGUARD=y
-        CONFIG_PACKAGE_smartdns-ui=y
         CONFIG_PACKAGE_vim=y
         CONFIG_PACKAGE_vim-runtime=y
         EOF
