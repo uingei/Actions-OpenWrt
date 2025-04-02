@@ -155,6 +155,10 @@ uci -q batch <<-EOF >/dev/null
     commit sqm
 EOF
 
+cat >> /etc/smartdns/address.conf <<-EOF
+conf-file /etc/smartdns/conf.d/anti-ad-for-smartdns.conf
+EOF
+
 cat >> /etc/smartdns/custom.conf <<-EOF
 
 # cache persist file
