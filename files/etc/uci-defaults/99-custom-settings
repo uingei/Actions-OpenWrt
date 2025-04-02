@@ -173,6 +173,7 @@ serve-expired-ttl 345600
 # Support reading dnsmasq dhcp file to resolve local hostname
 #dnsmasq-lease-file /tmp/dhcp.leases
 
+edns-client-subnet 60.177.72.0/21
 EOF
 
 passwd root <<EOF
