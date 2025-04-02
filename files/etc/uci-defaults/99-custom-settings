@@ -58,7 +58,7 @@ uci -q batch <<-EOF >/dev/null
     set smartdns.@smartdns[0].seconddns_server_group='pw'
     set smartdns.@smartdns[0].seconddns_no_speed_check='1'
     set smartdns.@smartdns[0].seconddns_force_aaaa_soa='1'
-    set smartdns.@smartdns[0].seconddns_force_https_soa='1'
+    #set smartdns.@smartdns[0].seconddns_force_https_soa='1'
 
     set smartdns.@smartdns[0].log_level='debug'
     set smartdns.@smartdns[0].log_size='128k'
@@ -91,6 +91,9 @@ uci -q batch <<-EOF >/dev/null
     set smartdns.@server[3].type='tls'
     set smartdns.@server[3].ip='1.1.1.1'
     set smartdns.@server[3].use_proxy='1'
+    set smartdns.@server[3].tls_host_verify='cloudflare-dns.com'
+    set smartdns.@server[3].no_check_certificate='1'
+    set smartdns.@server[3].addition_arg='-check-edns'
 
     add smartdns server # =cfg06769c
     set smartdns.@server[4].name='Google'
@@ -99,6 +102,9 @@ uci -q batch <<-EOF >/dev/null
     set smartdns.@server[4].type='tls'
     set smartdns.@server[4].ip='8.8.8.8'
     set smartdns.@server[4].use_proxy='1'
+    set smartdns.@server[4].tls_host_verify='dns.google'
+    set smartdns.@server[4].no_check_certificate='1'
+    set smartdns.@server[4].addition_arg='-check-edns'
 
     add smartdns server # =cfg07769c
     set smartdns.@server[5].name='OpenDNS'
@@ -107,6 +113,9 @@ uci -q batch <<-EOF >/dev/null
     set smartdns.@server[5].type='tls'
     set smartdns.@server[5].ip='208.67.222.222'
     set smartdns.@server[5].use_proxy='1'
+    set smartdns.@server[5].tls_host_verify='dns.opendns.com'
+    set smartdns.@server[5].no_check_certificate='1'
+    set smartdns.@server[5].addition_arg='-check-edns'
 
     add smartdns download-file # =cfg0b0e4a
     set smartdns.@download-file[0].name='anti-ad-for-smartdns.conf'
