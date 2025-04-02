@@ -39,27 +39,19 @@ uci -q batch <<-EOF >/dev/null
     # for openwrt-22.03
     #set smartdns.@smartdns[0].auto_set_dnsmasq='1'
 
-    set smartdns.@smartdns[0].speed_check_mode='tcp:443'
-    set smartdns.@smartdns[0].tcp_server='0'
-    set smartdns.@smartdns[0].dualstack_ip_selection='0'
-    set smartdns.@smartdns[0].prefetch_domain='1'
-    set smartdns.@smartdns[0].serve_expired='1'
     set smartdns.@smartdns[0].cache_size='12288'
     set smartdns.@smartdns[0].cache_persist='0'
-    #set smartdns.@smartdns[0].resolve_local_hostnames='1'
-    #set smartdns.@smartdns[0].force_https_soa='1'
     set smartdns.@smartdns[0].rr_ttl_min='600'
+    set smartdns.@smartdns[0].prefetch_domain='1'
+    set smartdns.@smartdns[0].serve_expired='1'
+    set smartdns.@smartdns[0].force_https_soa='1'
 
     set smartdns.@smartdns[0].seconddns_enabled='1'
     #set smartdns.@smartdns[0].seconddns_port='6553'
-    set smartdns.@smartdns[0].seconddns_tcp_server='0'
     set smartdns.@smartdns[0].seconddns_server_group='pw'
     set smartdns.@smartdns[0].seconddns_no_speed_check='1'
-    #set smartdns.@smartdns[0].seconddns_no_rule_nameserver='1'
-    #set smartdns.@smartdns[0].seconddns_no_dualstack_selection='1'
-    #set smartdns.@smartdns[0].seconddns_no_cache='1'
     set smartdns.@smartdns[0].seconddns_force_aaaa_soa='1'
-    #set smartdns.@smartdns[0].seconddns_force_https_soa='1'
+    set smartdns.@smartdns[0].seconddns_force_https_soa='1'
 
     set smartdns.@smartdns[0].log_level='debug'
     set smartdns.@smartdns[0].log_size='128k'
@@ -67,6 +59,8 @@ uci -q batch <<-EOF >/dev/null
     set smartdns.@smartdns[0].enable_audit_log='1'
     set smartdns.@smartdns[0].audit_log_size='128k'
     set smartdns.@smartdns[0].audit_log_num='2'
+
+    set smartdns.@smartdns[0].proxy_server='socks5://127.0.0.1:1070'
 
     add smartdns server # =cfg02769c
     set smartdns.@server[0].name='Aliyun'
@@ -89,6 +83,7 @@ uci -q batch <<-EOF >/dev/null
     set smartdns.@server[3].server_group='pw'
     set smartdns.@server[3].type='tls'
     set smartdns.@server[3].ip='1.1.1.1'
+    set smartdns.@server[3].use_proxy='1'
 
     add smartdns server # =cfg06769c
     set smartdns.@server[4].name='Google'
@@ -96,6 +91,7 @@ uci -q batch <<-EOF >/dev/null
     set smartdns.@server[4].server_group='pw'
     set smartdns.@server[4].type='tls'
     set smartdns.@server[4].ip='8.8.8.8'
+    set smartdns.@server[4].use_proxy='1'
 
     add smartdns server # =cfg07769c
     set smartdns.@server[5].name='OpenDNS'
@@ -103,6 +99,7 @@ uci -q batch <<-EOF >/dev/null
     set smartdns.@server[5].server_group='pw'
     set smartdns.@server[5].type='tls'
     set smartdns.@server[5].ip='208.67.222.222'
+    set smartdns.@server[5].use_proxy='1'
 
     commit smartdns
 
@@ -148,31 +145,14 @@ EOF
 
 cat >> /etc/smartdns/custom.conf <<-EOF
 
-# dns cache size
-#cache-size 12288
-
-# enable persist cache when restart
-cache-persist yes
-
 # cache persist file
 cache-file /var/etc/smartdns/smartdns.cache
 
 # prefetch domain
-#prefetch-domain yes
 serve-expired-prefetch-time 43200
-
-# cache serve expired
-#serve-expired yes
 
 # cache serve expired TTL
 serve-expired-ttl 345600
-
-# force specific qtype return soa
-#force-qtype-SOA 65
-
-# ttl for all resource record
-# rr-ttl-min: minimum ttl for resource record
-#rr-ttl-min 600
 
 # Support reading dnsmasq dhcp file to resolve local hostname
 #dnsmasq-lease-file /tmp/dhcp.leases
