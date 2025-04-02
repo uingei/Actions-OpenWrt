@@ -46,6 +46,13 @@ uci -q batch <<-EOF >/dev/null
     set smartdns.@smartdns[0].serve_expired='1'
     set smartdns.@smartdns[0].force_https_soa='1'
 
+    set smartdns.@smartdns[0].speed_check_mode='none'
+    set smartdns.@smartdns[0].response_mode='fastest-ip'
+
+    set smartdns.@smartdns[0].enable_auto_update='1'
+    set smartdns.@smartdns[0].auto_update_week_time='*'
+    set smartdns.@smartdns[0].auto_update_day_time='5'
+
     set smartdns.@smartdns[0].seconddns_enabled='1'
     #set smartdns.@smartdns[0].seconddns_port='6553'
     set smartdns.@smartdns[0].seconddns_server_group='pw'
@@ -100,6 +107,11 @@ uci -q batch <<-EOF >/dev/null
     set smartdns.@server[5].type='tls'
     set smartdns.@server[5].ip='208.67.222.222'
     set smartdns.@server[5].use_proxy='1'
+
+    add smartdns download-file # =cfg0b0e4a
+    set smartdns.@download-file[0].name='anti-ad-for-smartdns.conf'
+    set smartdns.@download-file[0].url='https://neodev.team/smartdns.conf'
+    set smartdns.@download-file[0].type='config'
 
     commit smartdns
 
