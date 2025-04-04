@@ -120,6 +120,7 @@ jobs:
         #[[ -e tmp_luci/applications/luci-app-gost && ! -e feeds/luci/applications/luci-app-gost ]] && mv tmp_luci/applications/luci-app-gost feeds/luci/applications
         [ ! -e feeds/luci/applications/luci-app-homeproxy ] && git clone --branch master --depth 1 https://github.com/immortalwrt/homeproxy.git feeds/luci/applications/luci-app-homeproxy
         rm -rf feeds/packages/net/smartdns && git clone --branch master --depth 1 https://github.com/pymumu/openwrt-smartdns.git feeds/packages/net/smartdns
+        sed -i 's|../../lang/rust/rust-package.mk|$(TOPDIR)/feeds/packages/lang/rust/rust-package.mk|g' feeds/packages/net/smartdns/Makefile
         rm -rf feeds/luci/applications/luci-app-smartdns && git clone --branch master --depth 1 https://github.com/pymumu/luci-app-smartdns.git feeds/luci/applications/luci-app-smartdns
         [[ -e tmp_packages/net/mosdns && ! -e feeds/packages/net/mosdns ]] && mv tmp_packages/net/mosdns feeds/packages/net
         sed -i '/CGO_ENABLED=0/,+1d' feeds/packages/net/mosdns/Makefile
@@ -201,6 +202,7 @@ jobs:
         CONFIG_PACKAGE_miniupnpd-iptables=y
         # CONFIG_PACKAGE_miniupnpd-nftables is not set
         # CONFIG_PACKAGE_nftables-json is not set
+        CONFIG_PACKAGE_smartdns-ui=y
         CONFIG_PACKAGE_openssh-sftp-server=y
         # CONFIG_PACKAGE_wpad-basic-mbedtls is not set
         CONFIG_PACKAGE_wpad-openssl=y
