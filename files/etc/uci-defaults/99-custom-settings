@@ -52,8 +52,8 @@ uci -q batch <<-EOF >/dev/null
     set smartdns.@smartdns[0].seconddns_enabled='1'
     #set smartdns.@smartdns[0].seconddns_port='6553'
     set smartdns.@smartdns[0].seconddns_server_group='pw'
-    #set smartdns.@smartdns[0].seconddns_no_speed_check='1'
-    #set smartdns.@smartdns[0].seconddns_force_aaaa_soa='1'
+    set smartdns.@smartdns[0].seconddns_no_speed_check='1'
+    set smartdns.@smartdns[0].seconddns_force_aaaa_soa='1'
     #set smartdns.@smartdns[0].seconddns_force_https_soa='1'
 
     set smartdns.@smartdns[0].enable_auto_update='1'
