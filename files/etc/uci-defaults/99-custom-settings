@@ -45,8 +45,8 @@ uci -q batch <<-EOF >/dev/null
     set smartdns.@smartdns[0].serve_expired='1'
     set smartdns.@smartdns[0].force_https_soa='1'
 
-    set smartdns.@smartdns[0].speed_check_mode='ping'
-    set smartdns.@smartdns[0].response_mode='fastest-ip'
+    #set smartdns.@smartdns[0].speed_check_mode='ping'
+    #set smartdns.@smartdns[0].response_mode='fastest-ip'
 
     set smartdns.@smartdns[0].seconddns_enabled='1'
     #set smartdns.@smartdns[0].seconddns_port='6553'
