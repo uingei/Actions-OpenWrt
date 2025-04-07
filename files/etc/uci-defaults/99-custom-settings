@@ -30,7 +30,7 @@ uci -q batch <<-EOF >/dev/null
     set smartdns.@smartdns[0].serve_expired='1'
     set smartdns.@smartdns[0].force_https_soa='1'
 
-    set smartdns.@smartdns[0].speed_check_mode='none'
+    set smartdns.@smartdns[0].speed_check_mode='ping'
     set smartdns.@smartdns[0].response_mode='fastest-ip'
 
     set smartdns.@smartdns[0].seconddns_enabled='1'
@@ -145,6 +145,10 @@ EOF
 
 cat >> /etc/smartdns/address.conf <<-EOF
 conf-file /etc/smartdns/conf.d/anti-ad-for-smartdns.conf
+
+domain-set -name pw -type list -file /usr/share/passwall/rules/gfwlist
+
+domain-rules /domain-set:pw/ -speed-check-mode none -nameserver pw -address #6
 EOF
 
 cat >> /etc/smartdns/custom.conf <<-EOF
