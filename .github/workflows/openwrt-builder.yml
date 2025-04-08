@@ -223,7 +223,6 @@ jobs:
         CONFIG_PACKAGE_libustream-openssl=y
         CONFIG_PACKAGE_luci=y
         CONFIG_LUCI_LANG_zh_Hans=y
-        CONFIG_PACKAGE_luci-app-adblock=y
         CONFIG_PACKAGE_luci-app-ddns=y
         CONFIG_PACKAGE_luci-app-filemanager=y
         CONFIG_PACKAGE_luci-app-openclash=y
