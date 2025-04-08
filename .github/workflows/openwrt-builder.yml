@@ -18,7 +18,7 @@ on:
 
 env:
   REPO_URL: https://git.openwrt.org/openwrt/openwrt.git
-  REPO_BRANCH: openwrt-24.10
+  REPO_BRANCH: openwrt-23.05
   FEEDS_CONF: feeds.conf.default
   CONFIG_FILE: .config
   DIY_P1_SH: diy-part1.sh
@@ -40,16 +40,6 @@ jobs:
       env:
         DEBIAN_FRONTEND: noninteractive
       run: |
-        sudo apt-get -qq purge apache2 \
-        netstandard-targeting-pack* \
-        clang-[0-9][0-9] lldb-[0-9][0-9] lld-[0-9][0-9] clang-format-[0-9][0-9] clang-tidy-[0-9][0-9] \
-        gcc-[0-9][0-9] g++-[0-9][0-9] gfortran-[0-9][0-9] \
-        ruby-full \
-        firefox google-chrome-stable microsoft-edge-stable \
-        java-common mysql-common nginx-common php-common postgresql-common \
-        ubuntu-standard -y
-        #rustup self uninstall -y
-        #rm -rf $HOME/.cargo $HOME/.rustup
         sudo mv /etc/apt/sources.list.d/ubuntu.sources /tmp
         sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL
         sudo mv /tmp/ubuntu.sources /etc/apt/sources.list.d
@@ -110,11 +100,9 @@ jobs:
         #cp $GITHUB_WORKSPACE/Makefile.golang feeds/packages/lang/golang/golang/Makefile
         git clone --branch master --depth 1 https://github.com/openwrt/packages.git new_packages
         rm -rf feeds/packages/lang/golang && mv new_packages/lang/golang feeds/packages/lang
-        #[ -e feeds/packages/net/xray-core/patches ] && rm -rf feeds/packages/net/xray-core/patches
-        git clone --branch openwrt-24.10 --depth 1 https://github.com/immortalwrt/packages.git tmp_packages
-        git clone --branch openwrt-24.10 --depth 1 https://github.com/immortalwrt/luci.git tmp_luci
-        git clone --branch openwrt-23.05 --depth 1 https://github.com/openwrt/packages.git tmp_oldpackages
-        [[ -e tmp_oldpackages/net/shadowsocks-libev && ! -e feeds/packages/net/shadowsocks-libev ]] && mv tmp_oldpackages/net/shadowsocks-libev feeds/packages/net
+        [ -e feeds/packages/net/xray-core/patches ] && rm -rf feeds/packages/net/xray-core/patches
+        git clone --branch openwrt-23.05 --depth 1 https://github.com/immortalwrt/packages.git tmp_packages
+        git clone --branch openwrt-23.05 --depth 1 https://github.com/immortalwrt/luci.git tmp_luci
         #[ ! -e feeds/luci/applications/luci-app-adguardhome ] && git clone --branch master --depth 1 https://github.com/kongfl888/luci-app-adguardhome.git feeds/luci/applications/luci-app-adguardhome
         #[[ -e tmp_packages/net/gost && ! -e feeds/packages/net/gost ]] && mv tmp_packages/net/gost feeds/packages/net
         #[[ -e tmp_luci/applications/luci-app-gost && ! -e feeds/luci/applications/luci-app-gost ]] && mv tmp_luci/applications/luci-app-gost feeds/luci/applications
@@ -133,7 +121,6 @@ jobs:
         rm -rf new_packages
         rm -rf tmp_packages
         rm -rf tmp_luci
-        rm -rf tmp_oldpackages
         ./scripts/feeds update -i packages
         ./scripts/feeds update -i luci
         sed -i "/iptables-nft/d" feeds/passwall2_luci/luci-app-passwall2/Makefile
@@ -146,15 +133,15 @@ jobs:
         [ -e files ] && mv files openwrt/files
         [ ! -e openwrt/files/etc/openclash/core ] && mkdir -p openwrt/files/etc/openclash/core
         tunver=$(curl --fail -sL https://raw.githubusercontent.com/vernesong/OpenClash/core/master/core_version | sed -n 2p)
-        #curl --fail -sL https://raw.githubusercontent.com/vernesong/OpenClash/core/master/meta/clash-linux-armv7.tar.gz | tar -xz -C openwrt/files/etc/openclash/core && mv openwrt/files/etc/openclash/core/clash openwrt/files/etc/openclash/core/clash_meta
-        #curl --fail -sL https://raw.githubusercontent.com/vernesong/OpenClash/core/master/premium/clash-linux-armv7-${tunver}.gz | gzip -d > openwrt/files/etc/openclash/core/clash_tun && chmod +x openwrt/files/etc/openclash/core/clash_tun
-        #curl --fail -sL https://raw.githubusercontent.com/vernesong/OpenClash/core/master/dev/clash-linux-armv7.tar.gz | tar -xz -C openwrt/files/etc/openclash/core
+        #curl --fail -sL https://raw.githubusercontent.com/vernesong/OpenClash/core/master/meta/clash-linux-mipsle-softfloat.tar.gz | tar -xz -C openwrt/files/etc/openclash/core && mv openwrt/files/etc/openclash/core/clash openwrt/files/etc/openclash/core/clash_meta
+        #curl --fail -sL https://raw.githubusercontent.com/vernesong/OpenClash/core/master/premium/clash-linux-mipsle-softfloat-${tunver}.gz | gzip -d > openwrt/files/etc/openclash/core/clash_tun && chmod +x openwrt/files/etc/openclash/core/clash_tun
+        #curl --fail -sL https://raw.githubusercontent.com/vernesong/OpenClash/core/master/dev/clash-linux-mipsle-softfloat.tar.gz | tar -xz -C openwrt/files/etc/openclash/core
         [ ! -e openwrt/files/usr/bin ] && mkdir -p openwrt/files/usr/bin
-        #curl --fail -sL https://static.adguard.com/adguardhome/release/AdGuardHome_linux_armv7.tar.gz | tar -xz -C openwrt/files/usr/bin
+        #curl --fail -sL https://static.adguard.com/adguardhome/release/AdGuardHome_linux_mipsle_softfloat.tar.gz | tar -xz -C openwrt/files/usr/bin
         [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt/.config || cat >> openwrt/.config <<EOF
-        CONFIG_TARGET_ipq40xx=y
-        CONFIG_TARGET_ipq40xx_generic=y
-        CONFIG_TARGET_ipq40xx_generic_DEVICE_linksys_mr8300=y
+        CONFIG_TARGET_ramips=y
+        CONFIG_TARGET_ramips_mt7621=y
+        CONFIG_TARGET_ramips_mt7621_DEVICE_xiaomi_mi-router-cr6608=y
         # CONFIG_PACKAGE_dnsmasq is not set
         CONFIG_PACKAGE_dnsmasq-full=y
         CONFIG_PACKAGE_dnsmasq_full_ipset=y
@@ -173,13 +160,13 @@ jobs:
         CONFIG_PACKAGE_libustream-openssl=y
         CONFIG_PACKAGE_luci=y
         CONFIG_LUCI_LANG_zh_Hans=y
-        CONFIG_PACKAGE_luci-app-advanced-reboot=y
-        CONFIG_PACKAGE_luci-app-filemanager=y
         CONFIG_PACKAGE_luci-app-passwall=y
-        # CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Shadowsocks_Libev_Client is not set
-        # CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Shadowsocks_Libev_Server is not set
-        CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Shadowsocks_Rust_Client=y
-        CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Shadowsocks_Rust_Server=y
+        CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Geoview=y
+        CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Haproxy=y
+        CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Shadowsocks_Libev_Server=y
+        CONFIG_PACKAGE_luci-app-passwall_INCLUDE_SingBox=y
+        CONFIG_PACKAGE_luci-app-passwall_INCLUDE_V2ray_Plugin=y
+        CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Xray=y
         CONFIG_PACKAGE_luci-app-smartdns=y
         CONFIG_PACKAGE_luci-app-sqm=y
         CONFIG_PACKAGE_luci-app-upnp=y
@@ -192,7 +179,6 @@ jobs:
         CONFIG_PACKAGE_miniupnpd-iptables=y
         # CONFIG_PACKAGE_miniupnpd-nftables is not set
         # CONFIG_PACKAGE_nftables-json is not set
-        CONFIG_PACKAGE_smartdns-ui=y
         CONFIG_PACKAGE_openssh-sftp-server=y
         # CONFIG_PACKAGE_wpad-basic-mbedtls is not set
         CONFIG_PACKAGE_wpad-openssl=y
@@ -258,8 +244,8 @@ jobs:
       run: |
         cd openwrt/bin/targets/*/*
         rm -rf packages
-        rm -f *initramfs-zImage.itb
-        rm -f *squashfs-sysupgrade.bin
+        rm -f *initramfs-kernel.bin
+        rm -f *squashfs-firmware.bin
         echo "FIRMWARE=$PWD" >> $GITHUB_ENV
         echo "status=success" >> $GITHUB_OUTPUT
 
