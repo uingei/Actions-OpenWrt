@@ -15,6 +15,8 @@ name: OpenWrt Builder
 on:
   repository_dispatch:
   workflow_dispatch:
+  schedule:
+    - cron: 0 0 * * 1
 
 env:
   REPO_URL: https://git.openwrt.org/openwrt/openwrt.git
