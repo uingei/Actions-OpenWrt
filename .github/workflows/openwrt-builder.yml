@@ -225,7 +225,7 @@ jobs:
         New_PKG_SOURCE_VERSION=$(git ls-remote https://github.com/pymumu/smartdns.git master | awk '{ print $1; }')
         New_SMARTDNS_WEBUI_SOURCE_VERSION=$(git ls-remote https://github.com/pymumu/smartdns-webui.git main | awk '{ print $1; }')
         echo "smartdns PKG_SOURCE_VERSION: $New_PKG_SOURCE_VERSION"
-        echo "SMARTDNS_WEBUI_SOURCE_VERSION: $New_SMARTDNS_WEBUI_SOURCE_VERSION"
+        echo "smartdns-webui SOURCE_VERSION: $New_SMARTDNS_WEBUI_SOURCE_VERSION"
         sed -i "s/PKG_SOURCE_VERSION:=.*/PKG_SOURCE_VERSION:=$New_PKG_SOURCE_VERSION/g ; s/SMARTDNS_WEBUI_SOURCE_VERSION:=.*/SMARTDNS_WEBUI_SOURCE_VERSION:=$New_SMARTDNS_WEBUI_SOURCE_VERSION/g" feeds/packages/net/smartdns/Makefile
         make download -j8
         make package/feeds/packages/smartdns/check FIXUP=1
