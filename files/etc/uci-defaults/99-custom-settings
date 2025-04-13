@@ -23,6 +23,7 @@ uci -q batch <<-EOF >/dev/null
 
 # /etc/config/smartdns
     set smartdns.@smartdns[0].enabled='1'
+    set smartdns.@smartdns[0].ui='1'
     # for openwrt-22.03
     set smartdns.@smartdns[0].port='6053'
     # for openwrt-22.03
