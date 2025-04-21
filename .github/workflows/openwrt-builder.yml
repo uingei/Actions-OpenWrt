@@ -203,7 +203,6 @@ jobs:
         CONFIG_PACKAGE_miniupnpd-iptables=y
         # CONFIG_PACKAGE_miniupnpd-nftables is not set
         # CONFIG_PACKAGE_nftables-json is not set
-        CONFIG_PACKAGE_smartdns-ui=y
         CONFIG_PACKAGE_openssh-sftp-server=y
         # CONFIG_PACKAGE_wpad-basic-mbedtls is not set
         CONFIG_PACKAGE_wpad-openssl=y
