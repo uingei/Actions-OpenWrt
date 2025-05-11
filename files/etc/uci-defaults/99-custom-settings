@@ -186,6 +186,7 @@ EOF
 #EOF
 
 sed -i '/^cn$/d' /usr/share/passwall/rules/direct_host
+sed -i '1i\browserleaks.net\nbrowserleaks.org\nipleak.net' /usr/share/passwall/rules/proxy_host
 sed -i 's/geosite:cn/geosite:geolocation-cn/g' /usr/share/passwall/0_default_config
 
 sed -i '/passwall/d ; /helloworld/d ; /openclash/d' /etc/opkg/distfeeds.conf
