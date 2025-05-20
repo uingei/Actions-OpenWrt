@@ -159,7 +159,6 @@ jobs:
         CONFIG_PACKAGE_libustream-openssl=y
         CONFIG_PACKAGE_luci=y
         CONFIG_LUCI_LANG_zh_Hans=y
-        CONFIG_PACKAGE_luci-app-adblock=y
         CONFIG_PACKAGE_luci-app-advanced-reboot=y
         CONFIG_PACKAGE_luci-app-ddns=y
         CONFIG_PACKAGE_luci-app-openclash=y
@@ -168,6 +167,7 @@ jobs:
         CONFIG_PACKAGE_luci-app-smartdns=y
         CONFIG_PACKAGE_luci-app-sqm=y
         CONFIG_PACKAGE_luci-app-ssr-plus=y
+        # CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_MosDNS is not set
         CONFIG_PACKAGE_luci-app-syncdial=y
         CONFIG_PACKAGE_luci-app-upnp=y
         CONFIG_PACKAGE_luci-app-vlmcsd=y
