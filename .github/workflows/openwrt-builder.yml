@@ -131,7 +131,7 @@ jobs:
         [ -e files ] && mv files openwrt/files
         [ ! -e openwrt/files/etc/openclash/core ] && mkdir -p openwrt/files/etc/openclash/core
         tunver=$(curl --fail -sL https://raw.githubusercontent.com/vernesong/OpenClash/core/master/core_version | sed -n 2p)
-        #curl --fail -sL https://raw.githubusercontent.com/vernesong/OpenClash/core/master/meta/clash-linux-armv7.tar.gz | tar -xz -C openwrt/files/etc/openclash/core && mv openwrt/files/etc/openclash/core/clash openwrt/files/etc/openclash/core/clash_meta
+        curl --fail -sL https://raw.githubusercontent.com/vernesong/OpenClash/core/master/meta/clash-linux-armv7.tar.gz | tar -xz -C openwrt/files/etc/openclash/core && mv openwrt/files/etc/openclash/core/clash openwrt/files/etc/openclash/core/clash_meta
         #curl --fail -sL https://raw.githubusercontent.com/vernesong/OpenClash/core/master/premium/clash-linux-armv7-${tunver}.gz | gzip -d > openwrt/files/etc/openclash/core/clash_tun && chmod +x openwrt/files/etc/openclash/core/clash_tun
         #curl --fail -sL https://raw.githubusercontent.com/vernesong/OpenClash/core/master/dev/clash-linux-armv7.tar.gz | tar -xz -C openwrt/files/etc/openclash/core
         [ ! -e openwrt/files/usr/bin ] && mkdir -p openwrt/files/usr/bin
@@ -158,7 +158,6 @@ jobs:
         CONFIG_PACKAGE_luci-app-advanced-reboot=y
         CONFIG_PACKAGE_luci-app-ddns=y
         CONFIG_PACKAGE_luci-app-homeproxy=y
-        CONFIG_PACKAGE_luci-app-mihomo=y
         CONFIG_PACKAGE_luci-app-openclash=y
         CONFIG_PACKAGE_luci-app-passwall=y
         CONFIG_PACKAGE_luci-app-passwall2=y
