@@ -195,6 +195,7 @@ password
 EOF
 
 sed -i '/^cn$/d' /usr/share/passwall/rules/direct_host
+sed -i '1i\www.msftncsi.com\nwww.msftconnecttest.com\ndns.msftncsi.com' /usr/share/passwall/rules/direct_host
 sed -i '1i\c.hegre.com\np.hegre.com\ncontent.hegre.com\ncc.hegre.com\npp.hegre.com' /usr/share/passwall/rules/direct_host
 sed -i '1i\205.185.216.10\n205.185.216.42\n156.146.53.32\n156.146.53.33\n156.146.53.35\n156.146.53.36' /usr/share/passwall/rules/direct_ip
 sed -i '1i\browserleaks.net\nbrowserleaks.org\nipleak.net' /usr/share/passwall/rules/proxy_host
