@@ -21,6 +21,5 @@ echo 'src-git passwall_luci https://github.com/xiaorouji/openwrt-passwall.git;ma
 #echo 'src-git passwall_luci https://github.com/xiaorouji/openwrt-passwall.git;luci-smartdns-dev' >> feeds.conf.default
 echo 'src-git passwall2_luci https://github.com/xiaorouji/openwrt-passwall2.git;main' >> feeds.conf.default
 echo 'src-git openclash_luci https://github.com/vernesong/OpenClash.git;master' >> feeds.conf.default
-echo 'src-git mihomo https://github.com/morytyann/OpenWrt-mihomo.git;main' >> feeds.conf.default
 echo 'src-git helloworld https://github.com/fw876/helloworld.git;master' >> feeds.conf.default
 #echo 'src-git OpenAppFilter https://github.com/destan19/OpenAppFilter.git;master' >> feeds.conf.default
