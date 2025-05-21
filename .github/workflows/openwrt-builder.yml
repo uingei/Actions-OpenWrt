@@ -175,7 +175,6 @@ jobs:
         CONFIG_PACKAGE_luci-app-advanced-reboot=y
         CONFIG_PACKAGE_luci-app-ddns=y
         CONFIG_PACKAGE_luci-app-filemanager=y
-        CONFIG_PACKAGE_luci-app-openclash=y
         CONFIG_PACKAGE_luci-app-passwall=y
         # CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Shadowsocks_Libev_Client is not set
         # CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Shadowsocks_Libev_Server is not set
