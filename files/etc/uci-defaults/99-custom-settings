@@ -148,6 +148,10 @@ conf-file /etc/smartdns/conf.d/anti-ad-for-smartdns.conf
 domain-set -name pw -type list -file /usr/share/passwall/rules/gfwlist
 
 domain-rules /domain-set:pw/ -speed-check-mode none -nameserver pw -address #6
+
+nameserver /www.msftncsi.com/cn
+nameserver /www.msftconnecttest.com/cn
+nameserver /dns.msftncsi.com/cn
 EOF
 
 cat >> /etc/smartdns/custom.conf <<-EOF
