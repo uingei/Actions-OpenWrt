@@ -52,6 +52,7 @@ uci -q batch <<-EOF >/dev/null
     set wireless.mesh0.key='linksys0'
 
     set wireless.radio1.disabled='0'
+    set wireless.radio1.channel='auto'
 
     set wireless.default_radio1.key='password123'
     set wireless.default_radio1.ssid='ATV'
@@ -67,6 +68,7 @@ uci -q batch <<-EOF >/dev/null
     set wireless.default_radio1.time_zone='CST-8'
 
     set wireless.radio2.disabled='0'
+    set wireless.radio2.channel='auto'
 
     set wireless.default_radio2.key='password123'
     set wireless.default_radio2.ssid='ATV'
