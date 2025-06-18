@@ -13,21 +13,48 @@ uci -q batch <<-EOF >/dev/null
 # /etc/config/wireless
     set wireless.radio0.disabled='0'
     set wireless.radio0.channel='149'
-    set wireless.default_radio0.key='password123'
-    set wireless.default_radio0.ssid='ATV'
-    set wireless.default_radio0.encryption='psk2+ccmp'
+
+    del wireless.default_radio0
+
+    set wireless.mesh0=wifi-iface
+    set wireless.mesh0.device='radio0'
+    set wireless.mesh0.ifname='mesh0'
+    set wireless.mesh0.network='lan'
+    set wireless.mesh0.mode='mesh'
+    set wireless.mesh0.mesh_fwding='1'
+    set wireless.mesh0.mesh_id='mx5300'
+    set wireless.mesh0.encryption='sae'
+    set wireless.mesh0.key='linksys0'
 
     set wireless.radio1.disabled='0'
-    set wireless.radio1.channel='1'
+
     set wireless.default_radio1.key='password123'
     set wireless.default_radio1.ssid='ATV'
     set wireless.default_radio1.encryption='psk2+ccmp'
 
+    set wireless.default_radio1.ieee80211r='1'
+    set wireless.default_radio1.mobility_domain='4f57'
+    set wireless.default_radio1.ft_over_ds='1'
+    set wireless.default_radio1.ft_psk_generate_local='1'
+    set wireless.default_radio1.ieee80211k='1'
+    set wireless.default_radio1.bss_transition='1'
+    set wireless.default_radio1.time_advertisement='2'
+    set wireless.default_radio1.time_zone='CST-8'
+
     set wireless.radio2.disabled='0'
-    set wireless.radio2.channel='36'
+
     set wireless.default_radio2.key='password123'
     set wireless.default_radio2.ssid='ATV'
     set wireless.default_radio2.encryption='psk2+ccmp'
+
+    set wireless.default_radio2.ieee80211r='1'
+    set wireless.default_radio2.mobility_domain='4f57'
+    set wireless.default_radio2.ft_over_ds='1'
+    set wireless.default_radio2.ft_psk_generate_local='1'
+    set wireless.default_radio2.ieee80211k='1'
+    set wireless.default_radio2.bss_transition='1'
+    set wireless.default_radio2.time_advertisement='2'
+    set wireless.default_radio2.time_zone='CST-8'
 
     commit wireless
 
