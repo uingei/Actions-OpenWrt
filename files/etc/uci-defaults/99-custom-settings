@@ -7,7 +7,32 @@ uci -q batch <<-EOF >/dev/null
     commit system
 
 # /etc/config/network
+    add_list network.@device[0].ports="bat0"
+
     set network.lan.ipaddr='192.168.5.1'
+
+    set network.bat0=interface
+    set network.bat0.proto='batadv'
+    set network.bat0.routing_algo='BATMAN_IV'
+    set network.bat0.aggregated_ogms='1'
+    set network.bat0.ap_isolation='0'
+    set network.bat0.bonding='0'
+    set network.bat0.fragmentation='1'
+    set network.bat0.gw_mode='off'
+    set network.bat0.log_level='0'
+    set network.bat0.orig_interval='1000'
+    set network.bat0.bridge_loop_avoidance='1'
+    set network.bat0.distributed_arp_table='1'
+    set network.bat0.multicast_mode='1'
+    set network.bat0.network_coding='0'
+    set network.bat0.hop_penalty='30'
+    set network.bat0.isolation_mark='0x00000000/0x00000000'
+
+    set network.nwi_mesh0=interface
+    set network.nwi_mesh0.mtu='2304'
+    set network.nwi_mesh0.proto='batadv_hardif'
+    set network.nwi_mesh0.master='bat0'
+
     commit network
 
 # /etc/config/wireless
@@ -19,9 +44,9 @@ uci -q batch <<-EOF >/dev/null
     set wireless.mesh0=wifi-iface
     set wireless.mesh0.device='radio0'
     set wireless.mesh0.ifname='mesh0'
-    set wireless.mesh0.network='lan'
+    set wireless.mesh0.network='nwi_mesh0'
     set wireless.mesh0.mode='mesh'
-    set wireless.mesh0.mesh_fwding='1'
+    set wireless.mesh0.mesh_fwding='0'
     set wireless.mesh0.mesh_id='mx5300'
     set wireless.mesh0.encryption='sae'
     set wireless.mesh0.key='linksys0'
