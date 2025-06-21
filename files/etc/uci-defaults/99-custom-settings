@@ -162,6 +162,10 @@ uci -q batch <<-EOF >/dev/null
     set sqm.eth1.download='300000'
     set sqm.eth1.upload='30000'
     commit sqm
+
+# /etc/config/irqbalance
+    set irqbalance.irqbalance.enabled='1'
+    commit irqbalance
 EOF
 
 cat >> /etc/smartdns/address.conf <<-EOF
