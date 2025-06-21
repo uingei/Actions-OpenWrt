@@ -206,6 +206,7 @@ jobs:
         CONFIG_SINGBOX_WITH_WIREGUARD=y
         CONFIG_PACKAGE_vim=y
         CONFIG_PACKAGE_vim-runtime=y
+        CONFIG_PACKAGE_irqbalance=y
         EOF
         chmod +x $DIY_P2_SH
         cd openwrt
