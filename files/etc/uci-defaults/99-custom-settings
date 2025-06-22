@@ -160,6 +160,10 @@ uci -q batch <<-EOF >/dev/null
     set qosify.wan.bandwidth_down='300mbit'
     set qosify.wan.disabled='0'
     commit qosify
+
+# /etc/config/irqbalance
+    set irqbalance.irqbalance.enabled='1'
+    commit irqbalance
 EOF
 
 cat >> /etc/smartdns/address.conf <<-EOF
