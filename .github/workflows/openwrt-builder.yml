@@ -17,7 +17,7 @@ on:
   workflow_dispatch:
 
 env:
-  REPO_URL: https://git.openwrt.org/openwrt/openwrt.git
+  REPO_URL: https://github.com/uingei/openwrt-nss.git
   REPO_BRANCH: openwrt-24.10
   FEEDS_CONF: feeds.conf.default
   CONFIG_FILE: .config
@@ -161,9 +161,16 @@ jobs:
         # CONFIG_PACKAGE_dnsmasq_full_nftset is not set
         CONFIG_PACKAGE_firewall=y
         # CONFIG_PACKAGE_firewall4 is not set
+        CONFIG_PACKAGE_sqm-scripts-nss=y
         CONFIG_PACKAGE_diffutils=y
-        CONFIG_PACKAGE_kmod-ipt-offload=y
+        CONFIG_PACKAGE_kmod-br-netfilter=y
         # CONFIG_PACKAGE_kmod-nft-offload is not set
+        CONFIG_PACKAGE_kmod-ifb=y
+        CONFIG_PACKAGE_kmod-nss-ifb=y
+        CONFIG_PACKAGE_kmod-qca-nss-drv-pppoe=y
+        CONFIG_PACKAGE_kmod-qca-nss-drv-qdisc=y
+        CONFIG_PACKAGE_kmod-qca-nss-ecm=y
+        CONFIG_ATH11K_NSS_MESH_SUPPORT=y
         CONFIG_LUA_ECO_OPENSSL=y
         # CONFIG_LUA_ECO_MBEDTLS is not set
         CONFIG_PACKAGE_libopenssl-legacy=y
@@ -195,6 +202,7 @@ jobs:
         # CONFIG_PACKAGE_miniupnpd-nftables is not set
         # CONFIG_PACKAGE_nftables-json is not set
         CONFIG_PACKAGE_smartdns-ui=y
+        CONFIG_PACKAGE_tc-tiny=y
         CONFIG_PACKAGE_openssh-sftp-server=y
         # CONFIG_PACKAGE_wpad-basic-mbedtls is not set
         CONFIG_PACKAGE_wpad-openssl=y

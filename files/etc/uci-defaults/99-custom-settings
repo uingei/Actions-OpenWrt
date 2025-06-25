@@ -38,6 +38,9 @@ uci -q batch <<-EOF >/dev/null
 # /etc/config/wireless
     set wireless.radio0.disabled='0'
     set wireless.radio0.channel='149'
+    set wireless.radio0.txpower='30'
+    set wireless.radio0.country='US'
+    set wireless.radio0.noscan='1'
 
     del wireless.default_radio0
 
@@ -53,6 +56,9 @@ uci -q batch <<-EOF >/dev/null
 
     set wireless.radio1.disabled='0'
     set wireless.radio1.channel='36'
+    set wireless.radio1.txpower='21'
+    set wireless.radio1.country='US'
+    set wireless.radio0.noscan='1'
 
     set wireless.default_radio1.key='password123'
     set wireless.default_radio1.ssid='ATV'
@@ -69,6 +75,8 @@ uci -q batch <<-EOF >/dev/null
 
     set wireless.radio2.disabled='0'
     set wireless.radio2.channel='1'
+    set wireless.radio2.txpower='24'
+    set wireless.radio2.country='US'
 
     set wireless.default_radio2.key='password123'
     set wireless.default_radio2.ssid='ATV'
@@ -211,10 +219,17 @@ uci -q batch <<-EOF >/dev/null
     commit vlmcsd
 
 # /etc/config/sqm
-    set sqm.eth1.enabled='1'
-    set sqm.eth1.interface='wan'
-    set sqm.eth1.download='300000'
-    set sqm.eth1.upload='30000'
+    del sqm.@queue[0]
+
+    add sqm queue # =cfg02b68a
+    rename sqm.@queue[-1]='wan'
+    set sqm.@queue[-1].enabled='0'
+    set sqm.@queue[-1].interface='wan'
+    set sqm.@queue[-1].download='300000'
+    set sqm.@queue[-1].upload='30000'
+    set sqm.@queue[-1].qdisc='fq_codel'
+    set sqm.@queue[-1].script='nss-zk.qos'
+
     commit sqm
 
 # /etc/config/irqbalance
