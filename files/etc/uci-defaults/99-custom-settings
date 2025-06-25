@@ -219,10 +219,11 @@ uci -q batch <<-EOF >/dev/null
     commit vlmcsd
 
 # /etc/config/sqm
-    set sqm.eth1.enabled='1'
-    set sqm.eth1.interface='wan'
-    set sqm.eth1.download='300000'
-    set sqm.eth1.upload='30000'
+    rename sqm.@queue[0]='wan'
+    set sqm.@queue[0].enabled='1'
+    set sqm.@queue[0].interface='wan'
+    set sqm.@queue[0].download='300000'
+    set sqm.@queue[0].upload='30000'
     commit sqm
 
 # /etc/config/irqbalance
