@@ -37,7 +37,7 @@ uci -q batch <<-EOF >/dev/null
 
 # /etc/config/wireless
     set wireless.radio0.disabled='0'
-    set wireless.radio0.channel='149'
+    set wireless.radio0.channel='153'
     set wireless.radio0.txpower='30'
     set wireless.radio0.country='US'
     set wireless.radio0.noscan='1'
@@ -55,7 +55,7 @@ uci -q batch <<-EOF >/dev/null
     set wireless.mesh0.key='linksys0'
 
     set wireless.radio1.disabled='0'
-    set wireless.radio1.channel='36'
+    set wireless.radio1.channel='40'
     set wireless.radio1.txpower='21'
     set wireless.radio1.country='US'
     set wireless.radio0.noscan='1'
@@ -74,7 +74,7 @@ uci -q batch <<-EOF >/dev/null
     set wireless.default_radio1.time_zone='CST-8'
 
     set wireless.radio2.disabled='0'
-    set wireless.radio2.channel='1'
+    set wireless.radio2.channel='6'
     set wireless.radio2.txpower='24'
     set wireless.radio2.country='US'
 
