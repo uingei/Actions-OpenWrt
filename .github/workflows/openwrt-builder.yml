@@ -165,7 +165,6 @@ jobs:
         CONFIG_PACKAGE_diffutils=y
         CONFIG_PACKAGE_kmod-br-netfilter=y
         # CONFIG_PACKAGE_kmod-nft-offload is not set
-        CONFIG_PACKAGE_kmod-ifb=y
         CONFIG_PACKAGE_kmod-nss-ifb=y
         CONFIG_PACKAGE_kmod-qca-nss-drv-pppoe=y
         CONFIG_PACKAGE_kmod-qca-nss-drv-qdisc=y
@@ -202,7 +201,6 @@ jobs:
         # CONFIG_PACKAGE_miniupnpd-nftables is not set
         # CONFIG_PACKAGE_nftables-json is not set
         CONFIG_PACKAGE_smartdns-ui=y
-        CONFIG_PACKAGE_tc-tiny=y
         CONFIG_PACKAGE_openssh-sftp-server=y
         # CONFIG_PACKAGE_wpad-basic-mbedtls is not set
         CONFIG_PACKAGE_wpad-openssl=y
