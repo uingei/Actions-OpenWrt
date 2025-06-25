@@ -38,6 +38,9 @@ uci -q batch <<-EOF >/dev/null
 # /etc/config/wireless
     set wireless.radio0.disabled='0'
     set wireless.radio0.channel='149'
+    set wireless.radio0.txpower='30'
+    set wireless.radio0.country='US'
+    set wireless.radio0.noscan='1'
 
     del wireless.default_radio0
 
@@ -53,6 +56,9 @@ uci -q batch <<-EOF >/dev/null
 
     set wireless.radio1.disabled='0'
     set wireless.radio1.channel='36'
+    set wireless.radio1.txpower='21'
+    set wireless.radio1.country='US'
+    set wireless.radio0.noscan='1'
 
     set wireless.default_radio1.key='password123'
     set wireless.default_radio1.ssid='ATV'
@@ -69,6 +75,8 @@ uci -q batch <<-EOF >/dev/null
 
     set wireless.radio2.disabled='0'
     set wireless.radio2.channel='1'
+    set wireless.radio2.txpower='24'
+    set wireless.radio2.country='US'
 
     set wireless.default_radio2.key='password123'
     set wireless.default_radio2.ssid='ATV'
