@@ -155,6 +155,11 @@ jobs:
         CONFIG_TARGET_qualcommax=y
         CONFIG_TARGET_qualcommax_ipq807x=y
         CONFIG_TARGET_qualcommax_ipq807x_DEVICE_linksys_mx5300=y
+        # CONFIG_FEED_passwall_packages is not set
+        # CONFIG_FEED_passwall_luci is not set
+        # CONFIG_FEED_passwall2_luci is not set
+        # CONFIG_FEED_openclash_luci is not set
+        # CONFIG_FEED_helloworld is not set
         # CONFIG_PACKAGE_dnsmasq is not set
         CONFIG_PACKAGE_dnsmasq-full=y
         CONFIG_PACKAGE_dnsmasq_full_ipset=y
