@@ -18,12 +18,12 @@ uci -q batch <<-EOF >/dev/null
     # for openwrt-22.03
     #set smartdns.@smartdns[0].auto_set_dnsmasq='1'
 
-    set smartdns.@smartdns[0].cache_size='12288'
-    set smartdns.@smartdns[0].cache_persist='1'
-    set smartdns.@smartdns[0].rr_ttl_min='600'
-    set smartdns.@smartdns[0].prefetch_domain='1'
-    set smartdns.@smartdns[0].serve_expired='1'
-    set smartdns.@smartdns[0].force_https_soa='1'
+    #set smartdns.@smartdns[0].cache_size='12288'
+    #set smartdns.@smartdns[0].cache_persist='1'
+    #set smartdns.@smartdns[0].rr_ttl_min='600'
+    #set smartdns.@smartdns[0].prefetch_domain='1'
+    #set smartdns.@smartdns[0].serve_expired='1'
+    #set smartdns.@smartdns[0].force_https_soa='1'
 
     #set smartdns.@smartdns[0].speed_check_mode='ping'
     #set smartdns.@smartdns[0].response_mode='fastest-ip'
@@ -31,20 +31,20 @@ uci -q batch <<-EOF >/dev/null
     #set smartdns.@smartdns[0].seconddns_enabled='1'
     #set smartdns.@smartdns[0].seconddns_port='6553'
     #set smartdns.@smartdns[0].seconddns_server_group='pw'
-    set smartdns.@smartdns[0].seconddns_no_speed_check='1'
-    set smartdns.@smartdns[0].seconddns_force_aaaa_soa='1'
+    #set smartdns.@smartdns[0].seconddns_no_speed_check='1'
+    #set smartdns.@smartdns[0].seconddns_force_aaaa_soa='1'
     #set smartdns.@smartdns[0].seconddns_force_https_soa='1'
 
     #set smartdns.@smartdns[0].enable_auto_update='1'
     #set smartdns.@smartdns[0].auto_update_week_time='1'
     #set smartdns.@smartdns[0].auto_update_day_time='5'
 
-    set smartdns.@smartdns[0].log_level='debug'
-    set smartdns.@smartdns[0].log_size='128k'
-    set smartdns.@smartdns[0].log_num='2'
-    set smartdns.@smartdns[0].enable_audit_log='1'
-    set smartdns.@smartdns[0].audit_log_size='128k'
-    set smartdns.@smartdns[0].audit_log_num='2'
+    #set smartdns.@smartdns[0].log_level='debug'
+    #set smartdns.@smartdns[0].log_size='128k'
+    #set smartdns.@smartdns[0].log_num='2'
+    #set smartdns.@smartdns[0].enable_audit_log='1'
+    #set smartdns.@smartdns[0].audit_log_size='128k'
+    #set smartdns.@smartdns[0].audit_log_num='2'
 
     #add smartdns server # =cfg02769c
     #set smartdns.@server[0].name='Aliyun'
