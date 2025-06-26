@@ -158,6 +158,11 @@ jobs:
         # CONFIG_TARGET_ROOTFS_TARGZ is not set
         # CONFIG_TARGET_ROOTFS_EXT4FS is not set
         CONFIG_TARGET_ROOTFS_PARTSIZE=232
+        # CONFIG_FEED_passwall_packages is not set
+        # CONFIG_FEED_passwall_luci is not set
+        # CONFIG_FEED_passwall2_luci is not set
+        # CONFIG_FEED_openclash_luci is not set
+        # CONFIG_FEED_helloworld is not set
         CONFIG_PACKAGE_block-mount=y
         # CONFIG_PACKAGE_dnsmasq is not set
         CONFIG_PACKAGE_dnsmasq-full=y
