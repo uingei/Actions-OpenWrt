@@ -209,11 +209,6 @@ uci -q batch <<-EOF >/dev/null
 
     #commit dhcp
 
-# /etc/config/AdGuardHome
-    #set AdGuardHome.AdGuardHome.enabled='1'
-    #set AdGuardHome.AdGuardHome.redirect='redirect'
-    #commit AdGuardHome
-
 # /etc/config/adblock
     #set adblock.global.adb_triggerdelay='120'
     #commit adblock
