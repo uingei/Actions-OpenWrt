@@ -13,23 +13,28 @@ uci -q batch <<-EOF >/dev/null
 # /etc/config/smartdns
     #set smartdns.@smartdns[0].enabled='1'
     set smartdns.@smartdns[0].ui='1'
+    #set smartdns.@smartdns[0].server_name='smartdns'
     # for openwrt-22.03
     #set smartdns.@smartdns[0].port='6053'
     # for openwrt-22.03
     #set smartdns.@smartdns[0].auto_set_dnsmasq='1'
 
-    #set smartdns.@smartdns[0].cache_size='12288'
-    #set smartdns.@smartdns[0].cache_persist='1'
-    #set smartdns.@smartdns[0].rr_ttl_min='600'
-    #set smartdns.@smartdns[0].prefetch_domain='1'
-    #set smartdns.@smartdns[0].serve_expired='1'
-    #set smartdns.@smartdns[0].force_https_soa='1'
-
     #set smartdns.@smartdns[0].speed_check_mode='ping'
     #set smartdns.@smartdns[0].response_mode='fastest-ip'
+    #set smartdns.@smartdns[0].tcp_server='0'
+    #set smartdns.@smartdns[0].dualstack_ip_selection='0'
+#####################################################
+    #set smartdns.@smartdns[0].prefetch_domain='1'
+    #set smartdns.@smartdns[0].serve_expired='1'
+    #set smartdns.@smartdns[0].cache_size='12288'
+    #set smartdns.@smartdns[0].cache_persist='1'
+    #set smartdns.@smartdns[0].force_https_soa='1'
+    #set smartdns.@smartdns[0].rr_ttl_min='600'
+#####################################################
 
     #set smartdns.@smartdns[0].seconddns_enabled='1'
     #set smartdns.@smartdns[0].seconddns_port='6553'
+    #set smartdns.@smartdns[0].seconddns_tcp_server='0'
     #set smartdns.@smartdns[0].seconddns_server_group='pw'
     #set smartdns.@smartdns[0].seconddns_no_speed_check='1'
     #set smartdns.@smartdns[0].seconddns_force_aaaa_soa='1'
@@ -38,6 +43,13 @@ uci -q batch <<-EOF >/dev/null
     #set smartdns.@smartdns[0].enable_auto_update='1'
     #set smartdns.@smartdns[0].auto_update_week_time='1'
     #set smartdns.@smartdns[0].auto_update_day_time='5'
+
+    #add smartdns download-file # =cfg0b0e4a
+    #set smartdns.@download-file[0].name='anti-ad-for-smartdns.conf'
+    #set smartdns.@download-file[0].url='https://neodev.team/smartdns.conf'
+    #set smartdns.@download-file[0].type='config'
+
+    #set smartdns.@smartdns[0].proxy_server='socks5://127.0.0.1:1070'
 
     #set smartdns.@smartdns[0].log_level='debug'
     #set smartdns.@smartdns[0].log_size='128k'
@@ -69,6 +81,7 @@ uci -q batch <<-EOF >/dev/null
     #set smartdns.@server[3].exclude_default_group='1'
     #set smartdns.@server[3].tls_host_verify='cloudflare-dns.com'
     #set smartdns.@server[3].no_check_certificate='1'
+    #set smartdns.@server[3].use_proxy='1'
     #set smartdns.@server[3].addition_arg='-check-edns'
 
     #add smartdns server # =cfg06769c
@@ -79,6 +92,7 @@ uci -q batch <<-EOF >/dev/null
     #set smartdns.@server[4].exclude_default_group='1'
     #set smartdns.@server[4].tls_host_verify='dns.google'
     #set smartdns.@server[4].no_check_certificate='1'
+    #set smartdns.@server[4].use_proxy='1'
     #set smartdns.@server[4].addition_arg='-check-edns'
 
     #add smartdns server # =cfg07769c
@@ -89,12 +103,8 @@ uci -q batch <<-EOF >/dev/null
     #set smartdns.@server[5].exclude_default_group='1'
     #set smartdns.@server[5].tls_host_verify='dns.opendns.com'
     #set smartdns.@server[5].no_check_certificate='1'
+    #set smartdns.@server[5].use_proxy='1'
     #set smartdns.@server[5].addition_arg='-check-edns'
-
-    #add smartdns download-file # =cfg0b0e4a
-    #set smartdns.@download-file[0].name='anti-ad-for-smartdns.conf'
-    #set smartdns.@download-file[0].url='https://neodev.team/smartdns.conf'
-    #set smartdns.@download-file[0].type='config'
 
     commit smartdns
 
