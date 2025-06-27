@@ -95,12 +95,12 @@ uci -q batch <<-EOF >/dev/null
 
 # /etc/config/smartdns
     set smartdns.@smartdns[0].enabled='1'
-    set smartdns.@smartdns[0].ui='1'
     #set smartdns.@smartdns[0].server_name='smartdns'
     # for openwrt-22.03
     set smartdns.@smartdns[0].port='6053'
     # for openwrt-22.03
     #set smartdns.@smartdns[0].auto_set_dnsmasq='1'
+    set smartdns.@smartdns[0].ui='1'
 
     #set smartdns.@smartdns[0].speed_check_mode='ping'
     #set smartdns.@smartdns[0].response_mode='fastest-ip'
