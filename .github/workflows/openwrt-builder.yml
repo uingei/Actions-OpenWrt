@@ -153,6 +153,11 @@ jobs:
         CONFIG_TARGET_ipq40xx=y
         CONFIG_TARGET_ipq40xx_generic=y
         CONFIG_TARGET_ipq40xx_generic_DEVICE_asus_rt-ac42u=y
+        # CONFIG_FEED_passwall_packages is not set
+        # CONFIG_FEED_passwall_luci is not set
+        # CONFIG_FEED_passwall2_luci is not set
+        # CONFIG_FEED_openclash_luci is not set
+        # CONFIG_FEED_helloworld is not set
         # CONFIG_PACKAGE_dnsmasq is not set
         CONFIG_PACKAGE_dnsmasq-full=y
         CONFIG_PACKAGE_dnsmasq_full_ipset=y
@@ -207,6 +212,7 @@ jobs:
         CONFIG_SINGBOX_WITH_WIREGUARD=y
         CONFIG_PACKAGE_vim=y
         CONFIG_PACKAGE_vim-runtime=y
+        CONFIG_PACKAGE_irqbalance=y
         EOF
         chmod +x $DIY_P2_SH
         cd openwrt
