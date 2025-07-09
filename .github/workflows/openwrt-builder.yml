@@ -168,6 +168,7 @@ jobs:
         # CONFIG_TARGET_ROOTFS_TARGZ is not set
         # CONFIG_TARGET_ROOTFS_EXT4FS is not set
         CONFIG_TARGET_ROOTFS_PARTSIZE=232
+        # CONFIG_KERNEL_DEBUG_INFO is not set
         # CONFIG_FEED_passwall_packages is not set
         # CONFIG_FEED_passwall_luci is not set
         # CONFIG_FEED_passwall2_luci is not set
