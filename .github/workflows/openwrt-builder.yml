@@ -186,10 +186,8 @@ jobs:
         CONFIG_PACKAGE_kmod-fs-exfat=y
         CONFIG_PACKAGE_kmod-fs-ext4=y
         CONFIG_PACKAGE_kmod-fs-ntfs=y
-        CONFIG_PACKAGE_kmod-fs-vfat=y
         CONFIG_PACKAGE_kmod-fs-xfs=y
         CONFIG_PACKAGE_kmod-hwmon-coretemp=y
-        CONFIG_PACKAGE_kmod-i2c-core=y
         CONFIG_PACKAGE_kmod-i2c-i801=y
         CONFIG_PACKAGE_kmod-hid=y
         CONFIG_PACKAGE_kmod-hid-generic=y
@@ -201,13 +199,9 @@ jobs:
         CONFIG_PACKAGE_kmod-vmxnet3=y
         CONFIG_PACKAGE_kmod-bonding=y
         CONFIG_PACKAGE_kmod-l2tp=y
-        CONFIG_PACKAGE_kmod-ppp=y
-        CONFIG_PACKAGE_kmod-pppoe=y
         CONFIG_PACKAGE_kmod-sit=y
-        CONFIG_PACKAGE_kmod-tun=y
         CONFIG_PACKAGE_kmod-veth=y
         CONFIG_PACKAGE_kmod-vxlan=y
-        CONFIG_PACKAGE_kmod-wireguard=y
         CONFIG_PACKAGE_kmod-serial-8250=y
         CONFIG_PACKAGE_kmod-sound-core=y
         CONFIG_PACKAGE_kmod-usb-audio=y
@@ -227,7 +221,6 @@ jobs:
         CONFIG_PACKAGE_kmod-usb3=y
         CONFIG_PACKAGE_kmod-ath10k=y
         CONFIG_PACKAGE_kmod-brcmfmac=y
-        CONFIG_PACKAGE_kmod-cfg80211=y
         CONFIG_PACKAGE_kmod-mac80211=y
         CONFIG_LUA_ECO_OPENSSL=y
         # CONFIG_LUA_ECO_MBEDTLS is not set
