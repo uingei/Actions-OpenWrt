@@ -165,6 +165,7 @@ jobs:
         CONFIG_TARGET_ipq40xx=y
         CONFIG_TARGET_ipq40xx_generic=y
         CONFIG_TARGET_ipq40xx_generic_DEVICE_linksys_mr8300=y
+        # CONFIG_KERNEL_DEBUG_INFO is not set
         # CONFIG_FEED_passwall_packages is not set
         # CONFIG_FEED_passwall_luci is not set
         # CONFIG_FEED_passwall2_luci is not set
