@@ -40,6 +40,53 @@ jobs:
       env:
         DEBIAN_FRONTEND: noninteractive
       run: |
+        set -e
+
+        echo "[1/6] 获取当前安装的包列表（记录初始状态）..."
+        dpkg-query -W -f='${Package}\n' | sort > current-packages.txt
+
+        echo "[2/6] 写入 EFI 系统必要软件包列表..."
+        cat > efi-essential.txt <<EOF
+        grub-efi-amd64-signed
+        shim-signed
+        mokutil
+        sbsigntool
+        grub2-common
+        efibootmgr
+        os-prober
+        linux-image-generic
+        initramfs-tools
+        init
+        systemd-sysv
+        udev
+        libsystemd0
+        util-linux
+        base-files
+        login
+        passwd
+        EOF
+
+        echo "[3/6] 合并保留白名单..."
+        cat minimal-packages.txt efi-essential.txt | sort -u > full-minimal-efi.txt
+
+        echo "[4/6] 计算非白名单额外包..."
+        comm -23 current-packages.txt full-minimal-efi.txt > extra-packages.raw.txt
+
+        echo "[5/6] 过滤 Essential/held/关键依赖（如 libc6 等）..."
+        egrep -v '^(init|systemd|dpkg|apt|libc6|perl-base|coreutils|bash|login|util-linux|base-files|libpam|libselinux|libcrypt|libsystemd|libudev|libmount|libtinfo|debconf)' \
+          extra-packages.raw.txt > extra-packages.safe.txt
+
+        echo "[准备] 安装 aptitude..."
+        sudo apt-get update
+        sudo apt-get install -y aptitude
+
+        echo "[6/6] 使用 aptitude 非交互方式清理多余软件包..."
+        pkg_list=$(tr '\n' ' ' < extra-packages.safe.txt)
+        sudo aptitude -y -o Aptitude::ProblemResolver::SolutionCost="removals" purge $pkg_list \
+          || echo "[警告] 部分包未成功卸载"
+
+        echo "[Done] 可选清理命令：sudo apt-get autoremove --purge -y && sudo apt-get clean"
+
         sudo apt-get -qq purge apache2 \
         netstandard-targeting-pack* \
         clang-[0-9][0-9] lldb-[0-9][0-9] lld-[0-9][0-9] clang-format-[0-9][0-9] clang-tidy-[0-9][0-9] \
