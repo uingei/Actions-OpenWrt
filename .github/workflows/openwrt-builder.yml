@@ -84,7 +84,7 @@ jobs:
         echo "[6/6] 使用 apt-get 非交互方式清理多余软件包..."
         while read -r pkg; do
           echo "准备卸载：$pkg"
-          sudo apt-get purge -y -qq "$pkg" || echo "[跳过失败] $pkg"
+          sudo -E apt-get purge -y -qq "$pkg" || echo "[跳过失败] $pkg"
         done < extra-packages.safe.txt
 
         echo "[Done] 可选清理命令：sudo apt-get autoremove --purge -y && sudo apt-get clean"
