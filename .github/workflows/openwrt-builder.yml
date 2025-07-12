@@ -81,6 +81,7 @@ jobs:
         sudo apt-get upgrade
         sudo apt-get install -f
         sudo apt --fix-broken install
+        sudo apt-get install -y grub-efi-amd64-signed grub2-common mokutil
         sudo apt-get dist-upgrade
         #sudo apt-get install -y aptitude
 
