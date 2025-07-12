@@ -73,7 +73,7 @@ jobs:
         comm -23 current-packages.txt full-minimal-efi.txt > extra-packages.raw.txt
 
         echo "[5/6] 过滤 Essential/held/关键依赖（如 libc6 等）..."
-        egrep -v '^(init|systemd|dpkg|apt|libc6|perl-base|coreutils|bash|login|util-linux|base-files|libpam|libselinux|libcrypt|libsystemd|libudev|libmount|libtinfo|debconf)' \
+        egrep -v '^(init|systemd|dpkg|apt|libc6|perl-base|coreutils|bash|login|util-linux|base-files|libpam|libselinux|libcrypt|libsystemd|libudev|libmount|libtinfo|debconf|shim-signed|grub2-common|mokutil|grub-efi|linux-image|initramfs)' \
           extra-packages.raw.txt > extra-packages.safe.txt
 
         echo "[准备] 安装 aptitude..."
