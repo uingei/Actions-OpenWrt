@@ -25,7 +25,7 @@ env:
   DIY_P2_SH: diy-part2.sh
   UPLOAD_BIN_DIR: false
   UPLOAD_FIRMWARE: true
-  UPLOAD_RELEASE: true
+  UPLOAD_RELEASE: false
   TZ: Asia/Shanghai
 
 jobs:
@@ -78,7 +78,11 @@ jobs:
 
         echo "[准备] 安装 aptitude..."
         sudo apt-get update
-        sudo apt-get install -y aptitude
+        sudo apt-get upgrade
+        sudo apt-get install -f
+        sudo apt --fix-broken install
+        sudo apt-get dist-upgrade
+        #sudo apt-get install -y aptitude
 
         xargs sudo apt-get purge -y < extra-packages.safe.txt
         #echo "[6/6] 使用 aptitude 非交互方式清理多余软件包..."
