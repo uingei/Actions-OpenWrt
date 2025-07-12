@@ -49,27 +49,33 @@ jobs:
         cat > efi-essential.txt <<EOF
         grub-efi-amd64-signed
         shim-signed
-        mokutil
-        sbsigntool
         grub2-common
         efibootmgr
-        os-prober
-        linux-libc-dev
-        linux-base
-        linux-azure
+        initramfs-tools
+        linux-image-generic
         linux-image-azure
+        linux-headers-generic
         linux-headers-azure
         linux-tools-azure
         linux-cloud-tools-azure
-        initramfs-tools
-        init
+        linux-base
+        linux-azure
+        linux-libc-dev
         systemd-sysv
         udev
         libsystemd0
+        init
         util-linux
         base-files
         login
         passwd
+        bash
+        coreutils
+        os-prober
+        mokutil
+        sbsigntool
+        netplan.io
+        openssh-server
         walinuxagent
         EOF
 
