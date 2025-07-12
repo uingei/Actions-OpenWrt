@@ -77,9 +77,9 @@ jobs:
           extra-packages.raw.txt > extra-packages.safe.txt
 
         echo "[准备] 修复依赖 & 安装必要包..."
-        sudo apt-get update
-        sudo apt-get install -f -y || true
-        sudo apt-get install -y grub-efi-amd64-signed grub2-common mokutil
+        sudo -E apt-get update
+        sudo -E apt-get install -f -y -qq || true
+        sudo -E apt-get install -y -qq grub-efi-amd64-signed grub2-common mokutil
 
         echo "[6/6] 使用 apt-get 非交互方式清理多余软件包..."
         while read -r pkg; do
