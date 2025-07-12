@@ -70,12 +70,13 @@ jobs:
         walinuxagent
         EOF
 
-        echo "[2.1] 添加当前运行内核对应包名到白名单..."
-        uname -r | sed 's/^/linux-image-/' > kernel-package.txt
-        uname -r | sed 's/^/linux-modules-/' >> kernel-package.txt
-        uname -r | sed 's/^/linux-headers-/' >> kernel-package.txt
-        uname -r | sed 's/^/linux-tools-/' >> kernel-package.txt
-        uname -r | sed 's/^/linux-cloud-tools-/' >> kernel-package.txt
+        echo "[2.1] 动态添加当前内核相关包（避免误删运行内核）..."
+        KERNEL_VER="$(uname -r)"
+        echo "linux-image-$KERNEL_VER" > kernel-package.txt
+        echo "linux-modules-$KERNEL_VER" >> kernel-package.txt
+        echo "linux-headers-$KERNEL_VER" >> kernel-package.txt
+        echo "linux-tools-$KERNEL_VER" >> kernel-package.txt
+        echo "linux-cloud-tools-$KERNEL_VER" >> kernel-package.txt
 
         echo "[3/6] 合并保留白名单..."
         cat minimal-packages.txt efi-essential.txt kernel-package.txt | sort -u > full-minimal-efi.txt
@@ -113,5 +114,6 @@ jobs:
         name: package-cleanup-results
         path: |
           current-packages.txt
+          kernel-package.txt
           new-current-packages.txt
           removed-packages.txt
