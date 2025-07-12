@@ -92,8 +92,14 @@ jobs:
         echo "[信息] 保存最终当前包列表..."
         dpkg-query -W -f='${Package}\n' | sort > new-current-packages.txt
 
-    - name: Upload new package list
+        echo "[对比] 生成已删除包列表..."
+        comm -23 current-packages.txt new-current-packages.txt > removed-packages.txt
+
+    - name: Upload package comparison results
       uses: actions/upload-artifact@v4
       with:
-        name: new-current-packages
-        path: new-current-packages.txt
+        name: package-cleanup-results
+        path: |
+          current-packages.txt
+          new-current-packages.txt
+          removed-packages.txt
