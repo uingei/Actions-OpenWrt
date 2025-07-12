@@ -41,7 +41,7 @@ jobs:
         DEBIAN_FRONTEND: noninteractive
       run: |
         set -e
-        du -hs /home/linuxbrew/* /usr/share/miniconda/*
+        sudo du -hs /home/linuxbrew/* /usr/share/miniconda/*
 
         echo "[1/6] 获取当前安装的包列表（记录初始状态）..."
         dpkg-query -W -f='${Package}\n' | sort > current-packages.txt
