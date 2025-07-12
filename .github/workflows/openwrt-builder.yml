@@ -77,7 +77,7 @@ jobs:
           extra-packages.raw.txt > extra-packages.safe.txt
 
         echo "[准备] 修复依赖 & 安装必要包..."
-        sudo -E apt-get update
+        sudo -E apt-get update -qq
         sudo -E apt-get install -f -y -qq || true
         sudo -E apt-get install -y -qq grub-efi-amd64-signed grub2-common mokutil
 
