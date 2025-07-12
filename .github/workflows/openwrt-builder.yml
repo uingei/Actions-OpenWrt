@@ -42,7 +42,7 @@ jobs:
       run: |
         set -e
 
-        sudo du -h --max-depth=3 / | sort -hr | head -n 50
+        sudo du -h --max-depth=3 /usr /opt | sort -hr | head -n 50
 
         echo "[1/6] 获取当前安装的包列表（记录初始状态）..."
         dpkg-query -W -f='${Package}\n' | sort > current-packages.txt
@@ -119,7 +119,7 @@ jobs:
         echo "[对比] 生成已删除包列表..."
         comm -23 current-packages.txt new-current-packages.txt > removed-packages.txt
 
-        sudo du -h --max-depth=3 / | sort -hr | head -n 50
+        sudo du -h --max-depth=3 /usr /opt | sort -hr | head -n 50
 
         which cargo && cargo --version || echo "Rust 未安装或被破坏"
         which node && node -v || echo "Node.js 未安装或被破坏"
