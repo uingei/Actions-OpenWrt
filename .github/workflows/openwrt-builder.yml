@@ -54,6 +54,9 @@ jobs:
         grub2-common
         efibootmgr
         os-prober
+        linux-libc-dev
+        linux-base
+        linux-azure
         linux-image-azure
         linux-headers-azure
         linux-tools-azure
