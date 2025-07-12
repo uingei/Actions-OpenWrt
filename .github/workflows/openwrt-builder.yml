@@ -43,7 +43,7 @@ jobs:
         set -e
 
         echo "[1/6] 获取当前安装的包列表（记录初始状态）..."
-        dpkg-query -W -f='${Package}\n' | grep -v azure | grep -v walinuxagent | sort > current-packages.txt
+        dpkg-query -W -f='${Package}\n' | sort > current-packages.txt
 
         echo "[2/6] 写入 EFI 系统必要软件包列表..."
         cat > efi-essential.txt <<EOF
@@ -54,7 +54,7 @@ jobs:
         grub2-common
         efibootmgr
         os-prober
-        linux-image-generic
+        linux-image-azure
         initramfs-tools
         init
         systemd-sysv
@@ -64,10 +64,14 @@ jobs:
         base-files
         login
         passwd
+        walinuxagent
         EOF
 
+        echo "[2.1] 添加当前运行内核对应包名到白名单..."
+        uname -r | sed 's/^/linux-image-/' > kernel-package.txt
+
         echo "[3/6] 合并保留白名单..."
-        cat minimal-packages.txt efi-essential.txt | sort -u > full-minimal-efi.txt
+        cat minimal-packages.txt efi-essential.txt kernel-package.txt | sort -u > full-minimal-efi.txt
 
         echo "[4/6] 计算非白名单额外包..."
         comm -23 current-packages.txt full-minimal-efi.txt > extra-packages.raw.txt
