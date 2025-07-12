@@ -80,10 +80,11 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y aptitude
 
-        echo "[6/6] 使用 aptitude 非交互方式清理多余软件包..."
-        pkg_list=$(tr '\n' ' ' < extra-packages.safe.txt)
-        sudo aptitude -y -o Aptitude::ProblemResolver::SolutionCost="removals" purge $pkg_list \
-          || echo "[警告] 部分包未成功卸载"
+        xargs sudo apt-get purge -y < extra-packages.safe.txt
+        #echo "[6/6] 使用 aptitude 非交互方式清理多余软件包..."
+        #pkg_list=$(tr '\n' ' ' < extra-packages.safe.txt)
+        #sudo aptitude -y -o Aptitude::ProblemResolver::SolutionCost="removals" purge $pkg_list \
+        #  || echo "[警告] 部分包未成功卸载"
 
         echo "[Done] 可选清理命令：sudo apt-get autoremove --purge -y && sudo apt-get clean"
 
