@@ -137,7 +137,6 @@ jobs:
         sed -i 's|../../lang/rust/rust-package.mk|$(TOPDIR)/feeds/packages/lang/rust/rust-package.mk|g' feeds/packages/net/smartdns/Makefile
         rm -rf feeds/luci/applications/luci-app-smartdns && git clone --branch master --depth 1 https://github.com/pymumu/luci-app-smartdns.git feeds/luci/applications/luci-app-smartdns
         [[ -e tmp_packages/net/mosdns && ! -e feeds/packages/net/mosdns ]] && mv tmp_packages/net/mosdns feeds/packages/net
-        sed -i '/CGO_ENABLED=0/,+1d' feeds/packages/net/mosdns/Makefile
         [[ -e tmp_luci/applications/luci-app-syncdial && ! -e feeds/luci/applications/luci-app-syncdial ]] && mv tmp_luci/applications/luci-app-syncdial feeds/luci/applications
         [[ -e tmp_packages/net/vlmcsd && ! -e feeds/packages/net/vlmcsd ]] && mv tmp_packages/net/vlmcsd feeds/packages/net
         [[ -e tmp_luci/applications/luci-app-vlmcsd && ! -e feeds/luci/applications/luci-app-vlmcsd ]] && mv tmp_luci/applications/luci-app-vlmcsd feeds/luci/applications
