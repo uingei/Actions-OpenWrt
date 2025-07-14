@@ -164,9 +164,35 @@ EOF
 #password
 #EOF
 
-sed -i '/^cn$/d' /usr/share/passwall/rules/direct_host
-sed -i '1i\www.msftncsi.com\nwww.msftconnecttest.com\ndns.msftncsi.com' /usr/share/passwall/rules/direct_host
-sed -i '1i\browserleaks.net\nbrowserleaks.org\nipleak.net' /usr/share/passwall/rules/proxy_host
-sed -i 's/geosite:cn/geosite:geolocation-cn/g' /usr/share/passwall/0_default_config
+direct_host='/usr/share/passwall/rules/direct_host'
+proxy_host='/usr/share/passwall/rules/proxy_host'
+default_config='/usr/share/passwall/0_default_config'
+
+insert_line_top() {
+    file=$1
+    shift
+    for line in "$@"; do
+        grep -Fxq "$line" "$file" || sed -i "1i $line" "$file"
+    done
+}
+
+# 删除 direct_host 中整行 'cn'
+grep -Fxq 'cn' "$direct_host" && sed -i '/^cn$/d' "$direct_host"
+
+# 插入 direct_host
+insert_line_top "$direct_host" \
+    www.msftncsi.com \
+    www.msftconnecttest.com \
+    dns.msftncsi.com
+
+# 插入 proxy_host
+insert_line_top "$proxy_host" \
+    browserleaks.net \
+    browserleaks.org \
+    ipleak.net
+
+# 替换 default_config 中的 geosite:cn
+grep -q 'geosite:cn' "$default_config" && \
+    sed -i 's/geosite:cn/geosite:geolocation-cn/g' "$default_config"
 
 exit 0
