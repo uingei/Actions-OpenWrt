@@ -265,10 +265,45 @@ password
 password
 EOF
 
-sed -i '/^cn$/d' /usr/share/passwall/rules/direct_host
-sed -i '1i\www.msftncsi.com\nwww.msftconnecttest.com\ndns.msftncsi.com' /usr/share/passwall/rules/direct_host
-sed -i '1i\c.hegre.com\np.hegre.com\ncontent.hegre.com\ncc.hegre.com\npp.hegre.com' /usr/share/passwall/rules/direct_host
-sed -i '1i\205.185.216.10\n205.185.216.42\n156.146.53.32\n156.146.53.33\n156.146.53.35\n156.146.53.36' /usr/share/passwall/rules/direct_ip
-sed -i '1i\browserleaks.net\nbrowserleaks.org\nipleak.net' /usr/share/passwall/rules/proxy_host
+direct_host='/usr/share/passwall/rules/direct_host'
+direct_ip='/usr/share/passwall/rules/direct_ip'
+proxy_host='/usr/share/passwall/rules/proxy_host'
+
+insert_line_top() {
+    file=$1
+    shift
+    for line in "$@"; do
+        grep -Fxq "$line" "$file" || sed -i "1i $line" "$file"
+    done
+}
+
+# 删除 direct_host 中整行 'cn'
+grep -Fxq 'cn' "$direct_host" && sed -i '/^cn$/d' "$direct_host"
+
+# 插入 direct_host
+insert_line_top "$direct_host" \
+    www.msftncsi.com \
+    www.msftconnecttest.com \
+    dns.msftncsi.com \
+    c.hegre.com \
+    p.hegre.com \
+    content.hegre.com \
+    cc.hegre.com \
+    pp.hegre.com
+
+# 插入 direct_ip
+insert_line_top "$direct_ip" \
+    205.185.216.10 \
+    205.185.216.42 \
+    156.146.53.32 \
+    156.146.53.33 \
+    156.146.53.35 \
+    156.146.53.36
+
+# 插入 proxy_host
+insert_line_top "$proxy_host" \
+    browserleaks.net \
+    browserleaks.org \
+    ipleak.net
 
 exit 0
