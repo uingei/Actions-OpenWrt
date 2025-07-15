@@ -88,6 +88,12 @@ jobs:
         fi
         ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
 
+    - name: Setup dl cache
+      uses: actions/cache@v4
+      with:
+        path: openwrt/dl
+        key: dl-cache
+
     - name: Load custom feeds
       run: |
         [ -e $FEEDS_CONF ] && mv $FEEDS_CONF openwrt/feeds.conf.default
@@ -260,6 +266,7 @@ jobs:
         echo "smartdns PKG_SOURCE_VERSION: $New_PKG_SOURCE_VERSION"
         echo "smartdns-webui SOURCE_VERSION: $New_SMARTDNS_WEBUI_SOURCE_VERSION"
         sed -i "s/PKG_SOURCE_VERSION:=.*/PKG_SOURCE_VERSION:=$New_PKG_SOURCE_VERSION/g ; s/SMARTDNS_WEBUI_SOURCE_VERSION:=.*/SMARTDNS_WEBUI_SOURCE_VERSION:=$New_SMARTDNS_WEBUI_SOURCE_VERSION/g" feeds/packages/net/smartdns/Makefile
+        rm -rf dl/go-mod-cache dl/cargo
         make download -j8
         make package/feeds/packages/smartdns/check FIXUP=1
         New_PKG_MIRROR_HASH=$(grep PKG_MIRROR_HASH feeds/packages/net/smartdns/Makefile | awk -F '=' '{print $2}')
