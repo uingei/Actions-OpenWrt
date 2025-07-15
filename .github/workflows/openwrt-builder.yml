@@ -18,6 +18,7 @@ on:
 
 env:
   REPO_URL: https://git.openwrt.org/openwrt/openwrt.git
+  FALLBACK_URL: https://github.com/openwrt/openwrt.git
   REPO_BRANCH: openwrt-23.05
   FEEDS_CONF: feeds.conf.default
   CONFIG_FILE: .config
@@ -74,7 +75,17 @@ jobs:
       working-directory: /workdir
       run: |
         df -hT $PWD
-        git clone $REPO_URL -b $REPO_BRANCH openwrt
+        echo "Cloning $REPO_URL (branch $REPO_BRANCH)..."
+        if git clone -b "$REPO_BRANCH" "$REPO_URL" openwrt; then
+          echo "Cloned from primary repository."
+        else
+          echo "Primary clone failed, trying fallback: $FALLBACK_URL..."
+          git clone -b "$REPO_BRANCH" "$FALLBACK_URL" openwrt || { echo "::error ::Failed to clone both repositories."; exit 1; }
+          if [ -f "openwrt/$FEEDS_CONF" ]; then
+            echo "Updating feeds.conf to GitHub mirrors..."
+            sed -i 's|https://git.openwrt.org/feed/|https://github.com/openwrt/|g ; s|https://git.openwrt.org/project/|https://github.com/openwrt/|g' "openwrt/$FEEDS_CONF"
+          fi
+        fi
         ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
 
     - name: Load custom feeds
