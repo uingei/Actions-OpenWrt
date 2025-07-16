@@ -45,18 +45,19 @@ jobs:
 
         sudo docker image prune --all --force
 
+        # Clean unnecessary packages and directories
         dpkg-query -W -f='${Package}\n' | sort > current-packages.txt
         KERNEL_VER="$(uname -r)"
         grep "$KERNEL_VER" current-packages.txt > kernel-package.txt
         cat minimal-packages.txt kernel-package.txt | sort -u > minimal-packages.full.txt
-        comm -23 current-packages.txt minimal-packages.full.txt > extra-packages.txt
-        grep -v -E '^(google-chrome-stable|google-cloud-cli-anthoscli|postgresql-common-dev|temurin-11-jdk|temurin-17-jdk|temurin-21-jdk|temurin-8-jdk)$' \
-          extra-packages.txt > extra-packages.final.txt
+        comm -23 current-packages.txt minimal-packages.full.txt | \
+          grep -vE '^(google-chrome-stable|google-cloud-cli-anthoscli|postgresql-common-dev|temurin-[0-9]+-jdk)$' \
+          > extra-packages.final.txt
         sudo -E apt-get purge -y -qq $(< extra-packages.final.txt)
 
         sudo mv /etc/apt/sources.list.d/ubuntu.sources /tmp
         sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL \
-          /opt/hostedtoolcache/PyPy /opt/hostedtoolcache/Python /opt/hostedtoolcache/Ruby /opt/hostedtoolcache/go \
+          /opt/hostedtoolcache/{PyPy,Python,Ruby,go} \
           /usr/local/.ghcup /usr/share/swift /usr/local/share/powershell
         sudo mv /tmp/ubuntu.sources /etc/apt/sources.list.d
 
@@ -75,15 +76,20 @@ jobs:
       working-directory: /workdir
       run: |
         df -hT $PWD
-        echo "Cloning $REPO_URL (branch $REPO_BRANCH)..."
-        if git clone -b "$REPO_BRANCH" "$REPO_URL" openwrt; then
+        echo "Cloning ${REPO_URL} (branch ${REPO_BRANCH})..."
+        if git clone -b "${REPO_BRANCH}" "${REPO_URL}" openwrt; then
           echo "Cloned from primary repository."
         else
-          echo "Primary clone failed, trying fallback: $FALLBACK_URL..."
-          git clone -b "$REPO_BRANCH" "$FALLBACK_URL" openwrt || { echo "::error ::Failed to clone both repositories."; exit 1; }
-          if [ -f "openwrt/$FEEDS_CONF" ]; then
-            echo "Updating feeds.conf to GitHub mirrors..."
-            sed -i 's|https://git.openwrt.org/feed/|https://github.com/openwrt/|g ; s|https://git.openwrt.org/project/|https://github.com/openwrt/|g' "openwrt/$FEEDS_CONF"
+          echo "Primary clone failed, trying fallback: ${FALLBACK_URL}..."
+          git clone -b "${REPO_BRANCH}" "${FALLBACK_URL}" openwrt || {
+            echo "::error ::Failed to clone both repositories."
+            exit 1
+          }
+          if [ -f "openwrt/${FEEDS_CONF}" ]; then
+            sed -i \
+              -e 's|https://git.openwrt.org/feed/|https://github.com/openwrt/|g' \
+              -e 's|https://git.openwrt.org/project/|https://github.com/openwrt/|g' \
+              "openwrt/${FEEDS_CONF}"
           fi
         fi
         ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
