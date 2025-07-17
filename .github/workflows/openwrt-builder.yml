@@ -100,6 +100,24 @@ jobs:
         path: openwrt/dl
         key: dl-cache
 
+    - name: Setup build_dir cache
+      uses: actions/cache@v4
+      with:
+        path: |
+          openwrt/build_dir/host
+          openwrt/build_dir/toolchain*
+        key: build_dir-cache
+
+    - name: Setup staging_dir cache
+      uses: actions/cache@v4
+      with:
+        path: |
+          openwrt/staging_dir/host
+          openwrt/staging_dir/hostpkg
+          openwrt/staging_dir/target*
+          openwrt/staging_dir/toolchain*
+        key: staging_dir-cache
+
     - name: Load custom feeds
       run: |
         [ -e $FEEDS_CONF ] && mv $FEEDS_CONF openwrt/feeds.conf.default
