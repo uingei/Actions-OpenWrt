@@ -149,6 +149,11 @@ jobs:
           old_version=$(sed -n "/^$version_head/p" "$makefile" | awk -F '=' '{print $2}')
           new_version=$(curl -sL "$api_url" | jq -r 'map(select(.prerelease|not)) | first | .tag_name' | sed 's/.*v//')
 
+          if [[ -z "$new_version" ]]; then
+            echo "::error ::Failed to fetch new version for $pkg from $repo"
+            exit 1
+          fi
+
           echo "$pkg current version: $old_version"
           echo "$pkg latest version: $new_version"
 
@@ -156,6 +161,10 @@ jobs:
             echo "$pkg is up-to-date ($old_version), no update needed."
           else
             pkg_hash=$(wget -qO - "${download_url}${new_version}" | sha256sum | awk '{print $1}')
+            if [[ -z "$pkg_hash" ]]; then
+              echo "::error ::Failed to calculate hash for $pkg version $new_version"
+              exit 1
+            fi
             sed -i -e "/^$version_head/c$version_head$new_version" -e "/^$hash_head/c$hash_head$pkg_hash" "$makefile"
             echo "Updated $pkg version to $new_version"
           fi
