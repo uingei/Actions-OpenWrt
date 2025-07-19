@@ -146,28 +146,60 @@ jobs:
         update_pkg "sing-box" "SagerNet/sing-box"
         update_pkg "xray-core" "XTLS/Xray-core"
 
-        #cp $GITHUB_WORKSPACE/Makefile.golang feeds/packages/lang/golang/golang/Makefile
-        git clone --branch master --depth 1 https://github.com/openwrt/packages.git new_packages
-        rm -rf feeds/packages/lang/golang && mv new_packages/lang/golang feeds/packages/lang
-        [ -e feeds/packages/net/xray-core/patches ] && rm -rf feeds/packages/net/xray-core/patches
-        git clone --branch openwrt-23.05 --depth 1 https://github.com/immortalwrt/packages.git tmp_packages
-        git clone --branch openwrt-23.05 --depth 1 https://github.com/immortalwrt/luci.git tmp_luci
-        #[ ! -e feeds/luci/applications/luci-app-adguardhome ] && git clone --branch master --depth 1 https://github.com/kongfl888/luci-app-adguardhome.git feeds/luci/applications/luci-app-adguardhome
-        #[[ -e tmp_packages/net/gost && ! -e feeds/packages/net/gost ]] && mv tmp_packages/net/gost feeds/packages/net
-        #[[ -e tmp_luci/applications/luci-app-gost && ! -e feeds/luci/applications/luci-app-gost ]] && mv tmp_luci/applications/luci-app-gost feeds/luci/applications
-        [ ! -e feeds/luci/applications/luci-app-homeproxy ] && git clone --branch master --depth 1 https://github.com/immortalwrt/homeproxy.git feeds/luci/applications/luci-app-homeproxy
-        rm -rf feeds/packages/net/smartdns && git clone --branch master --depth 1 https://github.com/pymumu/openwrt-smartdns.git feeds/packages/net/smartdns
-        rm -rf feeds/luci/applications/luci-app-smartdns && git clone --branch master --depth 1 https://github.com/pymumu/luci-app-smartdns.git feeds/luci/applications/luci-app-smartdns
-        [[ -e tmp_packages/net/mosdns && ! -e feeds/packages/net/mosdns ]] && mv tmp_packages/net/mosdns feeds/packages/net
-        [[ -e tmp_luci/applications/luci-app-syncdial && ! -e feeds/luci/applications/luci-app-syncdial ]] && mv tmp_luci/applications/luci-app-syncdial feeds/luci/applications
-        [[ -e tmp_packages/net/vlmcsd && ! -e feeds/packages/net/vlmcsd ]] && mv tmp_packages/net/vlmcsd feeds/packages/net
-        [[ -e tmp_luci/applications/luci-app-vlmcsd && ! -e feeds/luci/applications/luci-app-vlmcsd ]] && mv tmp_luci/applications/luci-app-vlmcsd feeds/luci/applications
-        #[ ! -e feeds/packages/lang/lua-maxminddb ] && git clone --branch master --depth 1 https://github.com/jerrykuku/lua-maxminddb.git feeds/packages/lang/lua-maxminddb
-        #[ ! -e feeds/luci/applications/luci-app-vssr ] && git clone --branch master --depth 1 https://github.com/jerrykuku/luci-app-vssr.git feeds/luci/applications/luci-app-vssr
-        [[ -e tmp_luci/applications/luci-app-zerotier && ! -e feeds/luci/applications/luci-app-zerotier ]] && mv tmp_luci/applications/luci-app-zerotier feeds/luci/applications
-        rm -rf new_packages
+        git clone --branch master --depth 1 https://github.com/openwrt/packages.git tmp_newpackages || exit 1
+        if [ -d tmp_newpackages/lang/golang ] && [ -d feeds/packages/lang/golang ]; then
+          rm -rf feeds/packages/lang/golang && mv tmp_newpackages/lang/golang feeds/packages/lang
+        fi
+
+        git clone --branch "${REPO_BRANCH}" --depth 1 https://github.com/immortalwrt/packages.git tmp_packages || exit 1
+        git clone --branch "${REPO_BRANCH}" --depth 1 https://github.com/immortalwrt/luci.git tmp_luci || exit 1
+
+        #[ ! -d feeds/luci/applications/luci-app-adguardhome ] && \
+        #  git clone --branch master --depth 1 https://github.com/kongfl888/luci-app-adguardhome.git feeds/luci/applications/luci-app-adguardhome || exit 1
+
+        #if [ -d tmp_packages/net/gost ] && [ ! -d feeds/packages/net/gost ]; then
+        #  mv tmp_packages/net/gost feeds/packages/net
+        #fi
+        #if [ -d tmp_luci/applications/luci-app-gost ] && [ ! -d feeds/luci/applications/luci-app-gost ]; then
+        #  mv tmp_luci/applications/luci-app-gost feeds/luci/applications
+        #fi
+
+        [ ! -d feeds/luci/applications/luci-app-homeproxy ] && \
+          git clone --branch master --depth 1 https://github.com/immortalwrt/homeproxy.git feeds/luci/applications/luci-app-homeproxy || exit 1
+
+        [ -d feeds/packages/net/smartdns ] && rm -rf feeds/packages/net/smartdns && \
+          git clone --branch master --depth 1 https://github.com/pymumu/openwrt-smartdns.git feeds/packages/net/smartdns || exit 1
+        [ -d feeds/luci/applications/luci-app-smartdns ] && rm -rf feeds/luci/applications/luci-app-smartdns && \
+          git clone --branch master --depth 1 https://github.com/pymumu/luci-app-smartdns.git feeds/luci/applications/luci-app-smartdns || exit 1
+
+        if [ -d tmp_packages/net/mosdns ] && [ ! -d feeds/packages/net/mosdns ]; then
+          mv tmp_packages/net/mosdns feeds/packages/net
+        fi
+
+        if [ -d tmp_luci/applications/luci-app-syncdial ] && [ ! -d feeds/luci/applications/luci-app-syncdial ]; then
+          mv tmp_luci/applications/luci-app-syncdial feeds/luci/applications
+        fi
+
+        if [ -d tmp_packages/net/vlmcsd ] && [ ! -d feeds/packages/net/vlmcsd ]; then
+          mv tmp_packages/net/vlmcsd feeds/packages/net
+        fi
+        if [ -d tmp_luci/applications/luci-app-vlmcsd ] && [ ! -d feeds/luci/applications/luci-app-vlmcsd ]; then
+          mv tmp_luci/applications/luci-app-vlmcsd feeds/luci/applications
+        fi
+
+        #[ ! -d feeds/packages/lang/lua-maxminddb ] && \
+        #  git clone --branch master --depth 1 https://github.com/jerrykuku/lua-maxminddb.git feeds/packages/lang/lua-maxminddb || exit 1
+        #[ ! -d feeds/luci/applications/luci-app-vssr ] && \
+        #  git clone --branch master --depth 1 https://github.com/jerrykuku/luci-app-vssr.git feeds/luci/applications/luci-app-vssr || exit 1
+
+        if [ -d tmp_luci/applications/luci-app-zerotier ] && [ ! -d feeds/luci/applications/luci-app-zerotier ]; then
+          mv tmp_luci/applications/luci-app-zerotier feeds/luci/applications
+        fi
+
+        rm -rf tmp_newpackages
         rm -rf tmp_packages
         rm -rf tmp_luci
+
         ./scripts/feeds update -i packages
         ./scripts/feeds update -i luci
         sed -i "/iptables-nft/d" feeds/passwall2_luci/luci-app-passwall2/Makefile
