@@ -163,6 +163,13 @@ jobs:
 
         [ -d feeds/packages/net/smartdns ] && rm -rf feeds/packages/net/smartdns && \
           git clone --branch master --depth 1 https://github.com/pymumu/openwrt-smartdns.git feeds/packages/net/smartdns || exit 1
+        New_PKG_SOURCE_VERSION=$(git ls-remote https://github.com/pymumu/smartdns.git master | awk '{ print $1; }')
+        New_SMARTDNS_WEBUI_SOURCE_VERSION=$(git ls-remote https://github.com/pymumu/smartdns-webui.git main | awk '{ print $1; }')
+        echo "smartdns PKG_SOURCE_VERSION: $New_PKG_SOURCE_VERSION"
+        echo "smartdns-webui SOURCE_VERSION: $New_SMARTDNS_WEBUI_SOURCE_VERSION"
+        sed -i -e "/^PKG_SOURCE_VERSION:=/cPKG_SOURCE_VERSION:=$New_PKG_SOURCE_VERSION" \
+          -e "/^SMARTDNS_WEBUI_SOURCE_VERSION:=/cSMARTDNS_WEBUI_SOURCE_VERSION:=$New_SMARTDNS_WEBUI_SOURCE_VERSION" \
+          feeds/packages/net/smartdns/Makefile
         [ -d feeds/luci/applications/luci-app-smartdns ] && rm -rf feeds/luci/applications/luci-app-smartdns && \
           git clone --branch master --depth 1 https://github.com/pymumu/luci-app-smartdns.git feeds/luci/applications/luci-app-smartdns || exit 1
 
@@ -286,17 +293,14 @@ jobs:
       run: |
         cd openwrt
         make defconfig
-        New_PKG_SOURCE_VERSION=$(git ls-remote https://github.com/pymumu/smartdns.git master | awk '{ print $1; }')
-        New_SMARTDNS_WEBUI_SOURCE_VERSION=$(git ls-remote https://github.com/pymumu/smartdns-webui.git main | awk '{ print $1; }')
-        echo "smartdns PKG_SOURCE_VERSION: $New_PKG_SOURCE_VERSION"
-        echo "smartdns-webui SOURCE_VERSION: $New_SMARTDNS_WEBUI_SOURCE_VERSION"
-        sed -i "s/PKG_SOURCE_VERSION:=.*/PKG_SOURCE_VERSION:=$New_PKG_SOURCE_VERSION/g ; s/SMARTDNS_WEBUI_SOURCE_VERSION:=.*/SMARTDNS_WEBUI_SOURCE_VERSION:=$New_SMARTDNS_WEBUI_SOURCE_VERSION/g" feeds/packages/net/smartdns/Makefile
         make download -j8
-        make package/feeds/packages/smartdns/check FIXUP=1
-        New_PKG_MIRROR_HASH=$(grep PKG_MIRROR_HASH feeds/packages/net/smartdns/Makefile | awk -F '=' '{print $2}')
-        New_MIRROR_HASH=$(grep MIRROR_HASH feeds/packages/net/smartdns/Makefile | tail -n 1 | awk -F '=' '{print $2}')
+        New_PKG_MIRROR_HASH=$(sha256sum dl/$(sed -n 's/^PKG_NAME:=//p' feeds/packages/net/smartdns/Makefile | tr -d ' ')-$(sed -n 's/^PKG_VERSION:=//p' feeds/packages/net/smartdns/Makefile | tr -d ' ' )* | awk '{print $1}')
+        New_MIRROR_HASH=$(sha256sum dl/smartdns-webui* | awk '{print $1}')
         echo "smartdns PKG_MIRROR_HASH: $New_PKG_MIRROR_HASH"
         echo "smartdns-webui MIRROR_HASH: $New_MIRROR_HASH"
+        sed -i -e "/^PKG_MIRROR_HASH:=/cPKG_MIRROR_HASH:=$New_PKG_MIRROR_HASH" \
+          -e $'/^\tMIRROR_HASH/c\\\tMIRROR_HASH:='"$New_MIRROR_HASH" \
+          feeds/packages/net/smartdns/Makefile
         find dl -size -1024c -exec ls -l {} \;
         find dl -size -1024c -exec rm -f {} \;
 
