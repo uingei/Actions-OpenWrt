@@ -153,6 +153,7 @@ EOF
 #EOF
 
 direct_host='/usr/share/passwall/rules/direct_host'
+gfwlist='/usr/share/passwall/rules/gfwlist'
 proxy_host='/usr/share/passwall/rules/proxy_host'
 default_config='/usr/share/passwall/0_default_config'
 
@@ -173,8 +174,18 @@ insert_line_top "$direct_host" \
     www.msftconnecttest.com \
     dns.msftncsi.com
 
-# 插入 proxy_host
-insert_line_top "$proxy_host" \
+# 域名按条件插入 proxy_host（不在 gfwlist 且不在 proxy_host 时才插入）
+conditionally_insert_to_proxy_host() {
+    for line in "$@"; do
+        if ! grep -Fxq "$line" "$gfwlist" && ! grep -Fxq "$line" "$proxy_host"; then
+            sed -i "1i $line" "$proxy_host"
+        fi
+    done
+}
+
+# 执行插入逻辑
+conditionally_insert_to_proxy_host \
+    browserleaks.com \
     browserleaks.net \
     browserleaks.org \
     ipleak.net
