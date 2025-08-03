@@ -205,6 +205,7 @@ EOF
 
 direct_host='/usr/share/passwall/rules/direct_host'
 direct_ip='/usr/share/passwall/rules/direct_ip'
+gfwlist='/usr/share/passwall/rules/gfwlist'
 proxy_host='/usr/share/passwall/rules/proxy_host'
 
 insert_line_top() {
@@ -238,9 +239,19 @@ insert_line_top "$direct_ip" \
     156.146.53.35 \
     156.146.53.36
 
-# 插入 proxy_host
-insert_line_top "$proxy_host" \
+# 域名按条件插入 proxy_host（不在 gfwlist 且不在 proxy_host 时才插入）
+conditionally_insert_to_proxy_host() {
+    for line in "$@"; do
+        if ! grep -Fxq "$line" "$gfwlist" && ! grep -Fxq "$line" "$proxy_host"; then
+            sed -i "1i $line" "$proxy_host"
+        fi
+    done
+}
+
+# 执行插入逻辑
+conditionally_insert_to_proxy_host \
     prod.actual.battle.net \
+    browserleaks.com \
     browserleaks.net \
     browserleaks.org \
     ipleak.net
