@@ -178,6 +178,8 @@ domain-set -name pw -type list -file /usr/share/passwall/rules/gfwlist
 
 domain-rules /domain-set:pw/ -speed-check-mode none -nameserver pw -address #6
 
+nameserver /hegre.com/pw
+
 nameserver /www.msftncsi.com/cn
 nameserver /www.msftconnecttest.com/cn
 nameserver /dns.msftncsi.com/cn
@@ -206,7 +208,6 @@ password
 EOF
 
 direct_host='/usr/share/passwall/rules/direct_host'
-direct_ip='/usr/share/passwall/rules/direct_ip'
 gfwlist='/usr/share/passwall/rules/gfwlist'
 proxy_host='/usr/share/passwall/rules/proxy_host'
 
@@ -225,21 +226,7 @@ grep -Fxq 'cn' "$direct_host" && sed -i '/^cn$/d' "$direct_host"
 insert_line_top "$direct_host" \
     www.msftncsi.com \
     www.msftconnecttest.com \
-    dns.msftncsi.com \
-    c.hegre.com \
-    p.hegre.com \
-    content.hegre.com \
-    cc.hegre.com \
-    pp.hegre.com
-
-# 插入 direct_ip
-insert_line_top "$direct_ip" \
-    205.185.216.10 \
-    205.185.216.42 \
-    156.146.53.32 \
-    156.146.53.33 \
-    156.146.53.35 \
-    156.146.53.36
+    dns.msftncsi.com
 
 # 域名按条件插入 proxy_host（不在 gfwlist 且不在 proxy_host 时才插入）
 conditionally_insert_to_proxy_host() {
