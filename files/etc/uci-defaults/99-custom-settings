@@ -248,6 +248,7 @@ conditionally_insert_to_proxy_host() {
 
 # 执行插入逻辑
 conditionally_insert_to_proxy_host \
+    blob.core.windows.net \
     browserleaks.com \
     browserleaks.net \
     browserleaks.org \
