@@ -49,7 +49,7 @@ uci -q batch <<-EOF >/dev/null
     set smartdns.@smartdns[0].port='6053'
     # for openwrt-22.03
     #set smartdns.@smartdns[0].auto_set_dnsmasq='1'
-    #set smartdns.@smartdns[0].ui='1'
+    set smartdns.@smartdns[0].ui='1'
 
     #set smartdns.@smartdns[0].speed_check_mode='ping'
     #set smartdns.@smartdns[0].response_mode='fastest-ip'
