@@ -180,7 +180,7 @@ uci -q batch <<-EOF >/dev/null
     set smartdns.@server[10].type='tls'
     set smartdns.@server[10].server_group='pw'
     set smartdns.@server[10].exclude_default_group='1'
-    set smartdns.@server[10].tls_host_verify='resolver1.opendns.com'
+    set smartdns.@server[10].tls_host_verify='dns.opendns.com'
     set smartdns.@server[10].no_check_certificate='1'
     set smartdns.@server[10].use_proxy='1'
     set smartdns.@server[10].fallback='1'
