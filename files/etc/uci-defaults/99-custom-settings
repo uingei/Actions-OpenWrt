@@ -235,8 +235,6 @@ domain-set -name pw -type list -file /usr/share/passwall/rules/gfwlist
 
 domain-rules /domain-set:pw/ -speed-check-mode none -nameserver pw -address #6
 
-nameserver /hegre.com/pw
-
 nameserver /www.msftncsi.com/cn
 nameserver /www.msftconnecttest.com/cn
 nameserver /dns.msftncsi.com/cn
