@@ -17,7 +17,7 @@
 #echo 'src-git helloworld https://github.com/fw876/helloworld' >>feeds.conf.default
 #echo 'src-git passwall https://github.com/xiaorouji/openwrt-passwall' >>feeds.conf.default
 echo 'src-git passwall_packages https://github.com/xiaorouji/openwrt-passwall-packages.git;main' >> feeds.conf.default
-echo 'src-git passwall_luci https://github.com/xiaorouji/openwrt-passwall.git^9bc1cc445ad2655ec7c298f4f5ebc398df719852' >> feeds.conf.default
+echo 'src-git passwall_luci https://github.com/xiaorouji/openwrt-passwall.git;main' >> feeds.conf.default
 #echo 'src-git passwall_luci https://github.com/xiaorouji/openwrt-passwall.git;luci-smartdns-dev' >> feeds.conf.default
 echo 'src-git passwall2_luci https://github.com/xiaorouji/openwrt-passwall2.git;main' >> feeds.conf.default
 echo 'src-git openclash_luci https://github.com/vernesong/OpenClash.git;master' >> feeds.conf.default
