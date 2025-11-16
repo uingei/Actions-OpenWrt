@@ -49,7 +49,7 @@ uci -q batch <<-EOF >/dev/null
     set smartdns.@smartdns[0].port='6053'
     # for openwrt-22.03
     #set smartdns.@smartdns[0].auto_set_dnsmasq='1'
-    #set smartdns.@smartdns[0].ui='1'
+    set smartdns.@smartdns[0].ui='1'
 
     #set smartdns.@smartdns[0].speed_check_mode='ping'
     #set smartdns.@smartdns[0].response_mode='fastest-ip'
@@ -91,52 +91,100 @@ uci -q batch <<-EOF >/dev/null
     set smartdns.@smartdns[0].audit_log_num='2'
 
     add smartdns server # =cfg02769c
-    set smartdns.@server[0].name='Aliyun'
-    set smartdns.@server[0].ip='223.5.5.5'
+    set smartdns.@server[0].name='电信'
+    set smartdns.@server[0].ip='202.101.172.35'
     set smartdns.@server[0].server_group='cn'
 
     add smartdns server # =cfg03769c
-    set smartdns.@server[1].name='DNSPod'
-    set smartdns.@server[1].ip='119.29.29.29'
+    set smartdns.@server[1].name='电信'
+    set smartdns.@server[1].ip='202.101.172.47'
     set smartdns.@server[1].server_group='cn'
 
     add smartdns server # =cfg04769c
-    set smartdns.@server[2].name='Baidu'
-    set smartdns.@server[2].ip='180.76.76.76'
+    set smartdns.@server[2].name='Aliyun'
+    set smartdns.@server[2].ip='223.5.5.5'
     set smartdns.@server[2].server_group='cn'
+    set smartdns.@server[2].fallback='1'
 
     add smartdns server # =cfg05769c
-    set smartdns.@server[3].name='Cloudflare'
-    set smartdns.@server[3].ip='1.1.1.1'
-    set smartdns.@server[3].type='tls'
-    set smartdns.@server[3].server_group='pw'
-    set smartdns.@server[3].exclude_default_group='1'
-    set smartdns.@server[3].tls_host_verify='cloudflare-dns.com'
-    set smartdns.@server[3].no_check_certificate='1'
-    set smartdns.@server[3].use_proxy='1'
-    set smartdns.@server[3].addition_arg='-check-edns'
+    set smartdns.@server[3].name='DNSPod'
+    set smartdns.@server[3].ip='119.29.29.29'
+    set smartdns.@server[3].server_group='cn'
+    set smartdns.@server[3].fallback='1'
 
     add smartdns server # =cfg06769c
-    set smartdns.@server[4].name='Google'
-    set smartdns.@server[4].ip='8.8.8.8'
-    set smartdns.@server[4].type='tls'
-    set smartdns.@server[4].server_group='pw'
-    set smartdns.@server[4].exclude_default_group='1'
-    set smartdns.@server[4].tls_host_verify='dns.google'
-    set smartdns.@server[4].no_check_certificate='1'
-    set smartdns.@server[4].use_proxy='1'
-    set smartdns.@server[4].addition_arg='-check-edns'
+    set smartdns.@server[4].name='Baidu'
+    set smartdns.@server[4].ip='180.76.76.76'
+    set smartdns.@server[4].server_group='cn'
+    set smartdns.@server[4].fallback='1'
 
     add smartdns server # =cfg07769c
-    set smartdns.@server[5].name='OpenDNS'
-    set smartdns.@server[5].ip='208.67.222.222'
+    set smartdns.@server[5].name='Cloudflare'
+    set smartdns.@server[5].ip='1.1.1.1'
     set smartdns.@server[5].type='tls'
     set smartdns.@server[5].server_group='pw'
     set smartdns.@server[5].exclude_default_group='1'
-    set smartdns.@server[5].tls_host_verify='dns.opendns.com'
+    set smartdns.@server[5].tls_host_verify='cloudflare-dns.com'
     set smartdns.@server[5].no_check_certificate='1'
     set smartdns.@server[5].use_proxy='1'
     set smartdns.@server[5].addition_arg='-check-edns'
+
+    add smartdns server # =cfg08769c
+    set smartdns.@server[6].name='Cloudflare'
+    set smartdns.@server[6].ip='1.0.0.1'
+    set smartdns.@server[6].type='tls'
+    set smartdns.@server[6].server_group='pw'
+    set smartdns.@server[6].exclude_default_group='1'
+    set smartdns.@server[6].tls_host_verify='cloudflare-dns.com'
+    set smartdns.@server[6].no_check_certificate='1'
+    set smartdns.@server[6].use_proxy='1'
+    set smartdns.@server[6].addition_arg='-check-edns'
+
+    add smartdns server # =cfg09769c
+    set smartdns.@server[7].name='Google'
+    set smartdns.@server[7].ip='8.8.8.8'
+    set smartdns.@server[7].type='tls'
+    set smartdns.@server[7].server_group='pw'
+    set smartdns.@server[7].exclude_default_group='1'
+    set smartdns.@server[7].tls_host_verify='dns.google'
+    set smartdns.@server[7].no_check_certificate='1'
+    set smartdns.@server[7].use_proxy='1'
+    set smartdns.@server[7].addition_arg='-check-edns'
+
+    add smartdns server # =cfg10769c
+    set smartdns.@server[8].name='Google'
+    set smartdns.@server[8].ip='8.8.4.4'
+    set smartdns.@server[8].type='tls'
+    set smartdns.@server[8].server_group='pw'
+    set smartdns.@server[8].exclude_default_group='1'
+    set smartdns.@server[8].tls_host_verify='dns.google'
+    set smartdns.@server[8].no_check_certificate='1'
+    set smartdns.@server[8].use_proxy='1'
+    set smartdns.@server[8].addition_arg='-check-edns'
+
+    add smartdns server # =cfg11769c
+    set smartdns.@server[9].name='Quad9'
+    set smartdns.@server[9].ip='9.9.9.9'
+    set smartdns.@server[9].type='tls'
+    set smartdns.@server[9].server_group='pw'
+    set smartdns.@server[9].exclude_default_group='1'
+    set smartdns.@server[9].tls_host_verify='dns.quad9.net'
+    set smartdns.@server[9].no_check_certificate='1'
+    set smartdns.@server[9].use_proxy='1'
+    set smartdns.@server[9].fallback='1'
+    set smartdns.@server[9].addition_arg='-check-edns'
+
+    add smartdns server # =cfg12769c
+    set smartdns.@server[10].name='OpenDNS'
+    set smartdns.@server[10].ip='208.67.222.222'
+    set smartdns.@server[10].type='tls'
+    set smartdns.@server[10].server_group='pw'
+    set smartdns.@server[10].exclude_default_group='1'
+    set smartdns.@server[10].tls_host_verify='dns.opendns.com'
+    set smartdns.@server[10].no_check_certificate='1'
+    set smartdns.@server[10].use_proxy='1'
+    set smartdns.@server[10].fallback='1'
+    set smartdns.@server[10].addition_arg='-check-edns'
 
     commit smartdns
 
@@ -187,8 +235,6 @@ domain-set -name pw -type list -file /usr/share/passwall/rules/gfwlist
 
 domain-rules /domain-set:pw/ -speed-check-mode none -nameserver pw -address #6
 
-nameserver /hegre.com/pw
-
 nameserver /www.msftncsi.com/cn
 nameserver /www.msftconnecttest.com/cn
 nameserver /dns.msftncsi.com/cn
@@ -208,7 +254,7 @@ serve-expired-ttl 345600
 # Support reading dnsmasq dhcp file to resolve local hostname
 #dnsmasq-lease-file /tmp/dhcp.leases
 
-edns-client-subnet 202.101.172.0/23
+#edns-client-subnet 202.101.172.0/23
 EOF
 
 passwd root <<EOF
