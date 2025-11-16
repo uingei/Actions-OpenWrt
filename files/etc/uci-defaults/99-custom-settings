@@ -43,7 +43,7 @@ uci -q batch <<-EOF >/dev/null
     commit wireless
 
 # /etc/config/smartdns
-    set smartdns.@smartdns[0].enabled='1'
+    set smartdns.@smartdns[0].enabled='0'
     #set smartdns.@smartdns[0].server_name='smartdns'
     # for openwrt-22.03
     set smartdns.@smartdns[0].port='6053'
@@ -217,7 +217,7 @@ uci -q batch <<-EOF >/dev/null
 
 # /etc/config/sqm
     rename sqm.@queue[0]='wan'
-    set sqm.@queue[0].enabled='1'
+    #set sqm.@queue[0].enabled='1'
     set sqm.@queue[0].interface='wan'
     set sqm.@queue[0].download='300000'
     set sqm.@queue[0].upload='30000'
