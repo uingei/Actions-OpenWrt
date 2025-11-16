@@ -19,7 +19,7 @@ uci -q batch <<-EOF >/dev/null
 
     set wireless.default_radio0.key='password123'
     set wireless.default_radio0.ssid='ATV'
-    set wireless.default_radio0.encryption='sae-mixed'
+    set wireless.default_radio0.encryption='psk2+ccmp'
 
     set wireless.radio1.disabled='0'
     set wireless.radio1.channel='1'
@@ -28,7 +28,7 @@ uci -q batch <<-EOF >/dev/null
 
     set wireless.default_radio1.key='password123'
     set wireless.default_radio1.ssid='ATV'
-    set wireless.default_radio1.encryption='sae-mixed'
+    set wireless.default_radio1.encryption='psk2+ccmp'
 
     set wireless.radio2.disabled='0'
     set wireless.radio2.channel='36'
@@ -38,12 +38,12 @@ uci -q batch <<-EOF >/dev/null
 
     set wireless.default_radio2.key='password123'
     set wireless.default_radio2.ssid='ATV'
-    set wireless.default_radio2.encryption='sae-mixed'
+    set wireless.default_radio2.encryption='psk2+ccmp'
 
     commit wireless
 
 # /etc/config/smartdns
-    set smartdns.@smartdns[0].enabled='1'
+    set smartdns.@smartdns[0].enabled='0'
     #set smartdns.@smartdns[0].server_name='smartdns'
     # for openwrt-22.03
     set smartdns.@smartdns[0].port='6053'
@@ -218,7 +218,7 @@ uci -q batch <<-EOF >/dev/null
 # /etc/config/qosify
     set qosify.wan.bandwidth_up='30mbit'
     set qosify.wan.bandwidth_down='300mbit'
-    set qosify.wan.disabled='0'
+    #set qosify.wan.disabled='0'
     commit qosify
 
 # /etc/config/irqbalance
