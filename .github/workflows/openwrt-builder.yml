@@ -234,6 +234,8 @@ jobs:
         # CONFIG_FEED_passwall2_luci is not set
         # CONFIG_FEED_openclash_luci is not set
         # CONFIG_FEED_helloworld is not set
+        # CONFIG_PACKAGE_apk-mbedtls is not set
+        CONFIG_PACKAGE_apk-openssl=y
         # CONFIG_PACKAGE_dnsmasq is not set
         CONFIG_PACKAGE_dnsmasq-full=y
         CONFIG_PACKAGE_dnsmasq_full_ipset=y
