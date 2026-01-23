@@ -210,8 +210,8 @@ jobs:
         ./scripts/feeds update -i packages
         ./scripts/feeds update -i luci
         sed -i "/iptables-nft/d" feeds/passwall2_luci/luci-app-passwall2/Makefile
-        sed -i -e "/^GO_VERSION_PATCH：=/cGO_VERSION_PATCH：=6" \
-          -e "/^PKG_HASH：=/cPKG_HASH：=58cbf771e44d76de6f56d19e33b77d745a1e489340922875e46585b975c2b059" \
+        sed -i -e "/^GO_VERSION_PATCH:=/cGO_VERSION_PATCH:=6" \
+          -e "/^PKG_HASH:=/cPKG_HASH:=58cbf771e44d76de6f56d19e33b77d745a1e489340922875e46585b975c2b059" \
           feeds/packages/lang/golang/golang/Makefile
 
     - name: Install feeds
