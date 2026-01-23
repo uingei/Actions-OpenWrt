@@ -313,6 +313,7 @@ jobs:
         cd openwrt
         make defconfig
         make download -j8
+        ls -l smartdns*
         New_PKG_MIRROR_HASH=$(sha256sum dl/$(sed -n 's/^PKG_NAME:=//p' feeds/packages/net/smartdns/Makefile | tr -d ' ')-$(sed -n 's/^PKG_VERSION:=//p' feeds/packages/net/smartdns/Makefile | tr -d ' ' )* | awk '{print $1}')
         New_MIRROR_HASH=$(sha256sum dl/smartdns-webui* | awk '{print $1}')
         echo "smartdns PKG_MIRROR_HASH: $New_PKG_MIRROR_HASH"
