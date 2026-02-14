@@ -184,6 +184,9 @@ jobs:
         if [ -d tmp_newpackages/lang/golang ] && [ -d feeds/packages/lang/golang ]; then
           rm -rf feeds/packages/lang/golang && mv tmp_newpackages/lang/golang feeds/packages/lang
         fi
+        if [ -d tmp_newpackages/lang/rust ] && [ -d feeds/packages/lang/rust ]; then
+          rm -rf feeds/packages/lang/rust && mv tmp_newpackages/lang/rust feeds/packages/lang
+        fi
 
         git clone --branch "${REPO_BRANCH}" --depth 1 https://github.com/immortalwrt/packages.git tmp_packages || exit 1
         git clone --branch "${REPO_BRANCH}" --depth 1 https://github.com/immortalwrt/luci.git tmp_luci || exit 1
