@@ -312,9 +312,8 @@ jobs:
       run: |
         cd openwrt
         make defconfig
-        sed -i -e "/^PKG_MIRROR_HASH:=/cPKG_MIRROR_HASH:=skip" \
-          -e $'/^\tMIRROR_HASH/c\\\tMIRROR_HASH:='"skip" \
-          feeds/packages/net/smartdns/Makefile
+        sed -i -E 's/^([[:space:]]*(PKG_)?MIRROR_HASH:=).*/\1skip/' feeds/packages/net/smartdns/Makefile
+        grep MIRROR_HASH feeds/packages/net/smartdns/Makefile
         make download -j8
         ls -l dl/*smartdns*
         New_PKG_MIRROR_HASH=$(sha256sum dl/$(sed -n 's/^PKG_NAME:=//p' feeds/packages/net/smartdns/Makefile | tr -d ' ')-$(sed -n 's/^PKG_VERSION:=//p' feeds/packages/net/smartdns/Makefile | tr -d ' ' )* | awk '{print $1}')
@@ -324,7 +323,9 @@ jobs:
         sed -i -e "/^PKG_MIRROR_HASH:=/cPKG_MIRROR_HASH:=$New_PKG_MIRROR_HASH" \
           -e $'/^\tMIRROR_HASH/c\\\tMIRROR_HASH:='"$New_MIRROR_HASH" \
           feeds/packages/net/smartdns/Makefile
+        grep MIRROR_HASH feeds/packages/net/smartdns/Makefile
         make package/smartdns/check FIXUP=1 V=s
+        grep MIRROR_HASH feeds/packages/net/smartdns/Makefile
         find dl -size -1024c -exec ls -l {} \;
         find dl -size -1024c -exec rm -f {} \;
 
