@@ -268,7 +268,6 @@ jobs:
         # CONFIG_PACKAGE_luci-app-passwall_INCLUDE_ShadowsocksR_Libev_Client is not set
         # CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Trojan_Plus is not set
         CONFIG_PACKAGE_luci-app-smartdns=y
-        CONFIG_PACKAGE_luci-app-smartdns_INCLUDE_smartdns_ui=y
         CONFIG_PACKAGE_luci-app-sqm=y
         CONFIG_PACKAGE_luci-app-upnp=y
         CONFIG_PACKAGE_luci-app-vlmcsd=y
