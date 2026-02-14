@@ -312,6 +312,7 @@ jobs:
       run: |
         cd openwrt
         make defconfig
+        make package/smartdns/download V=s
         make package/smartdns/check FIXUP=1 V=s
         make download -j8
         ls -l dl/*smartdns*
