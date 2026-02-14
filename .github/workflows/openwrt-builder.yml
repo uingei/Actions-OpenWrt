@@ -312,6 +312,9 @@ jobs:
       run: |
         cd openwrt
         make defconfig
+        sed -i -e "/^PKG_MIRROR_HASH:=/cPKG_MIRROR_HASH:=skip" \
+          -e $'/^\tMIRROR_HASH/c\\\tMIRROR_HASH:='"skip" \
+          feeds/packages/net/smartdns/Makefile
         make package/smartdns/download V=s
         make package/smartdns/check FIXUP=1 V=s
         make download -j8
