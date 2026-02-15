@@ -246,6 +246,7 @@ jobs:
         CONFIG_PACKAGE_firewall=y
         # CONFIG_PACKAGE_firewall4 is not set
         CONFIG_PACKAGE_diffutils=y
+        CONFIG_PACKAGE_kmod-br-netfilter=y
         CONFIG_PACKAGE_kmod-ipt-offload=y
         # CONFIG_PACKAGE_kmod-nft-offload is not set
         CONFIG_LUA_ECO_OPENSSL=y
