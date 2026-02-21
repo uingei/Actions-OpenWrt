@@ -292,7 +292,6 @@ conditionally_insert_to_proxy_host() {
 
 # 执行插入逻辑
 conditionally_insert_to_proxy_host \
-    prod.actual.battle.net \
     browserleaks.com \
     browserleaks.net \
     browserleaks.org \
